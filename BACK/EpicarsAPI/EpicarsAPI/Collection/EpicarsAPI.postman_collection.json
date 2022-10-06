@@ -1,0 +1,18 @@
+{
+	"info": {
+		"_postman_id": "8e5c0650-a4b0-4778-8b04-f1d0ebfa36a0",
+		"name": "EpicarsAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20719282"
+	},
+	"item": [
+		{
+			"name": "Get Clientes",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
