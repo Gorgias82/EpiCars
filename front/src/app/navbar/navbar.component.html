@@ -1,9 +1,10 @@
 <mat-toolbar id="navbar" fxLayout="row" color="primary">
-    <h2 fxFlex>Responsive Toolbar Demo</h2>
+    <img src="../../assets/epicars_logo.jpg" alt="EPI CARS">
     <button mat-button *ngFor="let item of menuItems" 
         [fxShow]="item.showOnDesktop" 
         [fxShow.xs]="item.showOnMobile"
-        [fxShow.sm]="item.showOnTablet">
+        [fxShow.sm]="item.showOnTablet"
+        (click)="navegar(item.link)" >
         <mat-icon class="mr">{{item.icon}}</mat-icon>
         {{item.label}}
     </button>
@@ -18,7 +19,8 @@
             <ng-container *ngFor="let item of menuItems">
                 <div [fxShow]="!item.showOnDesktop" 
                      [fxShow.sm]="!item.showOnTablet" 
-                     [fxShow.xs]="!item.showOnMobile">
+                     [fxShow.xs]="!item.showOnMobile"
+                     (click)="navegar(item.link)" >
                     <button mat-menu-item>
                         <mat-icon class="mr">{{item.icon}}</mat-icon>
                         {{item.label}}

@@ -17,6 +17,7 @@ export class ClientesService {
    }
 
    getClientes() : Observable<any> {
+    console.log('getclientes service method')
     return this.http.get(this.baseUrl + this.path);
     
    }

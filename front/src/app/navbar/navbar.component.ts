@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from '../Models/menu-item.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -12,6 +13,7 @@ export class NavbarComponent implements OnInit {
     {
       label: 'Clientes',
       icon: 'person',
+      link : '/clientes',
       showOnMobile: false,
       showOnTablet: true,
       showOnDesktop: true
@@ -19,6 +21,7 @@ export class NavbarComponent implements OnInit {
     {
       label: 'Coches',
       icon: 'directions_car',
+      link : '',
       showOnMobile: false,
       showOnTablet: true,
       showOnDesktop: true
@@ -26,6 +29,7 @@ export class NavbarComponent implements OnInit {
     {
       label: 'Ventas',
       icon: 'euro_symbol',
+      link : '',
       showOnMobile: false,
       showOnTablet: true,
       showOnDesktop: true
@@ -33,6 +37,7 @@ export class NavbarComponent implements OnInit {
     {
       label: 'Gastos generales',
       icon: 'shop',
+      link : '',
       showOnMobile: false,
       showOnTablet: false,
       showOnDesktop: true
@@ -40,6 +45,7 @@ export class NavbarComponent implements OnInit {
     {
       label: 'Balance',
       icon: 'account_balance',
+      link : '',
       showOnMobile: false,
       showOnTablet: false,
       showOnDesktop: true
@@ -47,9 +53,14 @@ export class NavbarComponent implements OnInit {
     
   ];
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
+  }
+
+  navegar(ruta){
+    console.log(ruta)
+    this.router.navigateByUrl(ruta);
   }
 
 }
