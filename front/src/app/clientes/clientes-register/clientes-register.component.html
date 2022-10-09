@@ -1,0 +1,89 @@
+<form [formGroup]="registroCliente" (ngSubmit)="onSubmit(registroCliente)">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>
+                Crear nuevo cliente
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card>
+            <mat-form-field>
+                <mat-label>Documento:</mat-label>
+                <input matInput placeholder="Numero de dni o pasaporte" name="dni" formControlName="dni">
+                <mat-hint>Introduzca el numero de documento de usuario</mat-hint>
+                <mat-error
+                    *ngIf="registroCliente.get('dni')?.invalid && (registroCliente.get('dni')?.dirty || registroCliente.get('dni')?.touched)"
+                    required>
+                    Debe introducir un numero de documento
+                </mat-error>
+            </mat-form-field>
+
+            <mat-card-content>
+                <mat-form-field>
+                    <mat-label>Nombre:</mat-label>
+                    <input matInput placeholder="Nombre" name="nombre" formControlName="nombre">
+                    <mat-hint>Introduzca el nombre de usuario</mat-hint>
+                    <mat-error
+                        *ngIf="registroCliente.get('nombre')?.invalid && (registroCliente.get('nombre')?.dirty || registroCliente.get('nombre')?.touched)">
+                        Debe introducir un nombre
+                    </mat-error>
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-content>
+                <mat-form-field>
+                    <mat-label>Primer apellido:</mat-label>
+                    <input matInput placeholder="Primer apellido" name="apellido1" formControlName="apellido1">
+                    <mat-hint>Introduzca el primer apellido del cliente</mat-hint>
+                    <mat-error
+                        *ngIf="registroCliente.get('apellido1')?.invalid && (registroCliente.get('apellido1')?.dirty || registroCliente.get('apellido1')?.touched)">
+                        Debe introducir un apellido
+                    </mat-error>
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-content>
+                <mat-form-field>
+                    <mat-label>Segundo apellido:</mat-label>
+                    <input matInput placeholder="Segundo apellido" name="apellido2" formControlName="apellido2">
+                    <mat-hint>Introduzca el segundo apellido del cliente</mat-hint>
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-content>
+                <mat-form-field>
+                    <mat-label>Teléfono:</mat-label>
+                    <input matInput placeholder="Telefono" name="telefono" formControlName="telefono">
+                    <mat-hint>Introduzca el teléfono del cliente</mat-hint>
+                    <mat-error
+                        *ngIf="registroCliente.get('telefono')?.invalid && (registroCliente.get('telefono')?.dirty || registroCliente.get('telefono')?.touched)">
+                        Debe introducir un teléfono
+                    </mat-error>
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-content>
+                <mat-form-field>
+                    <mat-label>Email:</mat-label>
+                    <input matInput placeholder="Email" name="email" formControlName="email">
+                    <mat-hint>Introduzca el email del cliente</mat-hint>
+                    <mat-error
+                        *ngIf="registroCliente.get('email')?.invalid && (registroCliente.get('email')?.dirty || registroCliente.get('email')?.touched)">
+                        Debe introducir un email valido
+                    </mat-error>
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-content>
+                <mat-form-field>
+                    <mat-label>Dirección:</mat-label>
+                    <input matInput placeholder="Direccion" name="direccion" formControlName="direccion">
+                    <mat-hint>Introduzca la dirección del cliente</mat-hint>
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-actions class="mat-card-button-login">
+                <button mat-raised-button type="submit"
+                    [disabled]="registroCliente.get('dni')?.invalid 
+                    || registroCliente.get('nombre')?.invalid 
+                    || registroCliente.get('apellido1')?.invalid
+                    || registroCliente.get('telefono')?.invalid
+                    || registroCliente.get('email')?.invalid"
+                    color="primary">Enviar</button>
+            </mat-card-actions>
+        </mat-card>
+    </mat-card>
+</form>

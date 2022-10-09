@@ -3,6 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Cliente } from 'src/app/Models/cliente.model';
 import { ClientesService } from 'src/app/Services/clientes.service';
 import {MatPaginator} from '@angular/material/paginator';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -18,7 +19,7 @@ export class ClientesMainComponent implements OnInit {
   displayedColumns : string[] = ['documento', 'telefono', 'nombre' ,'apellido1','apellido2','direccion','email', 'iconos']
   dataSource : MatTableDataSource<Cliente>
   dsClientes : Cliente[]
-  constructor(private clientesService : ClientesService) { }
+  constructor(private clientesService : ClientesService, private router : Router) { }
 
   ngOnInit(): void {
 
@@ -47,6 +48,9 @@ export class ClientesMainComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  addCliente(){
+    this.router.navigateByUrl('clientes/registro');
+  }
 
 
 }

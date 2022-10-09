@@ -11,14 +11,17 @@ import { Cliente } from '../Models/cliente.model';
 export class ClientesService {
   private path : string = 'cliente';
   baseUrl : string;
-
+  
   constructor(private http : HttpClient) {
     this.baseUrl = environment.url_api;
    }
 
    getClientes() : Observable<any> {
-    console.log('getclientes service method')
     return this.http.get(this.baseUrl + this.path);
     
+   }
+
+   insertCliente(cliente : Cliente) : Observable<any> {
+    return this.http.post(this.baseUrl + this.path, cliente);
    }
 }

@@ -49,7 +49,7 @@
 
        <!-- Columna iconos -->
     <ng-container matColumnDef="iconos">
-        <th mat-header-cell *matHeaderCellDef> <button mat-button matTooltip="Añade un cliente"  matTooltipClass="add-tooltip" ><mat-icon>add_box</mat-icon> </button> </th>
+        <th mat-header-cell *matHeaderCellDef> <button mat-button matTooltip="Añade un cliente"  matTooltipClass="add-tooltip" (click)="addCliente()" ><mat-icon>add_box</mat-icon> </button> </th>
         <td mat-cell *matCellDef="let element"> 
             <button mat-button>   <mat-icon matTooltip="Modifica el cliente {{element.nombre}} {{element.apellido1}} {{element.apellido2}} " matTooltipClass="modify-tooltip"  >create</mat-icon> </button>
             <button mat-button>   <mat-icon matTooltip="Elimina el cliente {{element.nombre}} {{element.apellido1}} {{element.apellido2}}" matTooltipClass="delete-tooltip">delete</mat-icon> </button>       
