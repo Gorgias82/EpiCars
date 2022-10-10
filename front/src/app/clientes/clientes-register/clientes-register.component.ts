@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { stringToKeyValue } from '@angular/flex-layout/extended/style/style-transforms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Cliente } from 'src/app/Models/cliente.model';
 import { ClientesService } from 'src/app/Services/clientes.service';
 
@@ -14,7 +15,7 @@ export class ClientesRegisterComponent implements OnInit {
   registroCliente: FormGroup;
   cliente : Cliente;
 
-  constructor(private fb: FormBuilder, private clientesService : ClientesService, private router : Router) { 
+  constructor(private fb: FormBuilder, private clientesService : ClientesService, private router : Router,private toastr: ToastrService) { 
     this.registroCliente = this.fb.group({
       dni: ['', Validators.required],
       nombre: ['', Validators.required],
@@ -40,12 +41,11 @@ export class ClientesRegisterComponent implements OnInit {
       email : form.get('email')?.value as unknown as string,
       direccion : form.get('direccion')?.value as unknown as string,
     }
-    console.log(this.cliente);
     this.clientesService.insertCliente(this.cliente).subscribe(response => {
       
       if(response){
-        console.log(response)
-        this.router.navigateByUrl('clientes')
+        this.toastr.success('El cliente se ha introducido correctamente')
+        // this.router.navigateByUrl('clientes')
       }
     });
   }

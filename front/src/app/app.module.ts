@@ -2,7 +2,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule,  } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 //Componentes propios
 import { NavbarComponent } from './navbar/navbar.component';
@@ -15,6 +15,9 @@ import { ClientesModule } from './clientes/clientes.module';
 //Flexlayout
 import { FlexLayoutModule } from '@angular/flex-layout';
 
+//Toastr
+import { ToastrModule } from 'ngx-toastr';
+
 // Materials
 import {MatMenuModule} from '@angular/material/menu'; 
 import {MatButtonModule} from '@angular/material/button';
@@ -24,6 +27,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatInputModule} from '@angular/material/input';  
 import {MatFormFieldModule} from '@angular/material/form-field'; 
+import { ErrorInterceptor } from './interceptors/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -45,10 +49,15 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatPaginatorModule,
     HttpClientModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    ToastrModule.forRoot({
+      positionClass : 'toast-top-right'
+    })
 
   ],
-  providers: [],
+  providers: [
+    {provide : HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

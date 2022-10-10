@@ -19,6 +19,7 @@ export class ClientesMainComponent implements OnInit {
   displayedColumns : string[] = ['documento', 'telefono', 'nombre' ,'apellido1','apellido2','direccion','email', 'iconos']
   dataSource : MatTableDataSource<Cliente>
   dsClientes : Cliente[]
+  updatedCliente : Cliente
   constructor(private clientesService : ClientesService, private router : Router) { }
 
   ngOnInit(): void {
@@ -50,6 +51,12 @@ export class ClientesMainComponent implements OnInit {
 
   addCliente(){
     this.router.navigateByUrl('clientes/registro');
+  }
+
+  updateCliente(id : number){
+   console.log(id)
+   this.updatedCliente = this.dsClientes.find(function(c)  {return c.id == id})
+   console.log(this.updatedCliente)
   }
 
 

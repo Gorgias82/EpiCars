@@ -35,16 +35,16 @@ namespace EpicarsAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "EpicarsAPI", Version = "v1" });
             });
 
-            //services.AddCors(corsOptions =>
-            //{
-            //    corsOptions.AddDefaultPolicy(configurePolicy => configurePolicy
-            //            .AllowAnyOrigin()
-            //            .AllowAnyHeader()
-            //            .AllowAnyMethod()
-            //            );
-            //});
+            services.AddCors(corsOptions =>
+            {
+                corsOptions.AddDefaultPolicy(configurePolicy => configurePolicy
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        );
+            });
 
-            services.AddCors();
+            //services.AddCors();
 
             //se añade el context
             services.AddDbContext<epicars_Context>(options =>

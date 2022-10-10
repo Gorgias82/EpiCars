@@ -72,9 +72,13 @@ namespace EpicarsAPI.Controllers
 
             var existeEmail = _context.Cliente.Where(c => c.email == cliente.email).SingleOrDefault();
 
-            if (existeEmail != null)
+            if (existeEmail != null && existeEmail.email.Length > 0)
             {
                 return BadRequest(new { mensaje = "Ya existe un cliente con ese email" });
+            }
+            if(cliente.email.Length <= 0)
+            {
+                cliente.email = null;
             }
 
 
