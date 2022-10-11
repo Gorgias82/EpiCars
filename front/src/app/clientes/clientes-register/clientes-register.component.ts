@@ -14,7 +14,8 @@ import { ClientesService } from 'src/app/Services/clientes.service';
 export class ClientesRegisterComponent implements OnInit {
   registroCliente: FormGroup;
   cliente : Cliente;
-
+  updatedCliente : Cliente;
+  isModificacion : boolean = false;
   constructor(private fb: FormBuilder, private clientesService : ClientesService, private router : Router,private toastr: ToastrService) { 
     this.registroCliente = this.fb.group({
       dni: ['', Validators.required],
@@ -29,9 +30,27 @@ export class ClientesRegisterComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(localStorage.getItem("updatedCliente"));
+    if(localStorage.getItem("updatedCliente")){
+      this.updatedCliente = JSON.parse(localStorage.getItem("updatedCliente"));
+      this.isModificacion = true;
+      this.registroCliente = this.fb.group({
+        dni: [this.updatedCliente.documento, Validators.required],
+        nombre: [this.updatedCliente.nombre, Validators.required],
+        apellido1: [this.updatedCliente.apellido1, Validators.required],
+        apellido2: this.updatedCliente.apellido2,
+        telefono: [this.updatedCliente.telefono, Validators.required],
+        direccion: this.updatedCliente.direccion,
+        email : [this.updatedCliente.email, Validators.email]
+  
+      });
+      localStorage.removeItem("updatedCliente")
+    }
+    
   }
 
   onSubmit(form: FormGroup){  
+ 
     this.cliente = {
       nombre : form.get('nombre')?.value as unknown as string,
       apellido1 : form.get('apellido1')?.value as unknown as string,
@@ -41,13 +60,18 @@ export class ClientesRegisterComponent implements OnInit {
       email : form.get('email')?.value as unknown as string,
       direccion : form.get('direccion')?.value as unknown as string,
     }
-    this.clientesService.insertCliente(this.cliente).subscribe(response => {
-      
-      if(response){
-        this.toastr.success('El cliente se ha introducido correctamente')
-        // this.router.navigateByUrl('clientes')
-      }
-    });
+    if(this.isModificacion){
+      // aqui se llama al servicio de updating
+      this.isModificacion = false;
+    }else{
+      this.clientesService.insertCliente(this.cliente).subscribe(response => {      
+        if(response){
+          this.toastr.success('El cliente se ha introducido correctamente')
+          // this.router.navigateByUrl('clientes')
+        }
+      });
+    }
+
   }
 
 }

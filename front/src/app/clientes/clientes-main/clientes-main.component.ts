@@ -54,9 +54,10 @@ export class ClientesMainComponent implements OnInit {
   }
 
   updateCliente(id : number){
-   console.log(id)
    this.updatedCliente = this.dsClientes.find(function(c)  {return c.id == id})
-   console.log(this.updatedCliente)
+   localStorage.setItem("updatedCliente", JSON.stringify(this.updatedCliente));
+   this.router.navigateByUrl('clientes/registro')
+   
   }
 
 
