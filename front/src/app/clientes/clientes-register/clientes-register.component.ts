@@ -16,7 +16,13 @@ export class ClientesRegisterComponent implements OnInit {
   cliente : Cliente;
   updatedCliente : Cliente;
   isModificacion : boolean = false;
+  titulo : string = "Crear nuevo cliente";
+  boton : string = "add-submit";
   constructor(private fb: FormBuilder, private clientesService : ClientesService, private router : Router,private toastr: ToastrService) { 
+this.creaFormulario();
+  }
+
+  creaFormulario(){
     this.registroCliente = this.fb.group({
       dni: ['', Validators.required],
       nombre: ['', Validators.required],
@@ -34,6 +40,8 @@ export class ClientesRegisterComponent implements OnInit {
     if(localStorage.getItem("updatedCliente")){
       this.updatedCliente = JSON.parse(localStorage.getItem("updatedCliente"));
       this.isModificacion = true;
+      this.titulo = "Modifica el cliente " + this.updatedCliente.nombre + " " + this.updatedCliente.apellido1;
+      this.boton = "modify-submit";
       this.registroCliente = this.fb.group({
         dni: [this.updatedCliente.documento, Validators.required],
         nombre: [this.updatedCliente.nombre, Validators.required],
@@ -62,11 +70,22 @@ export class ClientesRegisterComponent implements OnInit {
     }
     if(this.isModificacion){
       // aqui se llama al servicio de updating
-      this.isModificacion = false;
+      this.cliente.id = this.updatedCliente.id;
+      this.clientesService.updateCliente(this.cliente).subscribe(response => {
+        if(response){
+          this.toastr.success('El cliente se ha modificado correctamente')
+          this.isModificacion = false;
+          this.titulo = "Crear nuevo cliente";
+          this.boton = "add-submit";
+          this.creaFormulario();
+        }
+      })
+  
     }else{
       this.clientesService.insertCliente(this.cliente).subscribe(response => {      
         if(response){
           this.toastr.success('El cliente se ha introducido correctamente')
+          this.creaFormulario();
           // this.router.navigateByUrl('clientes')
         }
       });

@@ -1,22 +1,19 @@
-<form [formGroup]="registroCliente" (ngSubmit)="onSubmit(registroCliente)">
-    <mat-card>
-        <mat-card-header>
-            <mat-card-title>
-                Crear nuevo cliente
-            </mat-card-title>
-        </mat-card-header>
-        <mat-card>
-            <mat-form-field>
-                <mat-label>Documento:</mat-label>
-                <input matInput placeholder="Numero de dni o pasaporte" name="dni" formControlName="dni">
-                <mat-hint>Introduzca el numero de documento de usuario</mat-hint>
-                <mat-error
-                    *ngIf="registroCliente.get('dni')?.invalid && (registroCliente.get('dni')?.dirty || registroCliente.get('dni')?.touched)"
-                    required>
-                    Debe introducir un numero de documento
-                </mat-error>
-            </mat-form-field>
-
+<div id="main">
+    <h1> {{titulo}} </h1>
+    <form [formGroup]="registroCliente" (ngSubmit)="onSubmit(registroCliente)">
+        <mat-card >
+            <mat-card-content>
+                <mat-form-field>
+                    <mat-label>Documento:</mat-label>
+                    <input matInput placeholder="Numero de dni o pasaporte" name="dni" formControlName="dni">
+                    <mat-hint>Introduzca el numero de documento de usuario</mat-hint>
+                    <mat-error
+                        *ngIf="registroCliente.get('dni')?.invalid && (registroCliente.get('dni')?.dirty || registroCliente.get('dni')?.touched)"
+                        required>
+                        Debe introducir un numero de documento
+                    </mat-error>
+                </mat-form-field>
+            </mat-card-content>
             <mat-card-content>
                 <mat-form-field>
                     <mat-label>Nombre:</mat-label>
@@ -76,14 +73,13 @@
                 </mat-form-field>
             </mat-card-content>
             <mat-card-actions class="mat-card-button-login">
-                <button mat-raised-button type="submit"
-                    [disabled]="registroCliente.get('dni')?.invalid 
-                    || registroCliente.get('nombre')?.invalid 
-                    || registroCliente.get('apellido1')?.invalid
-                    || registroCliente.get('telefono')?.invalid
-                    || registroCliente.get('email')?.invalid"
-                    color="primary">Enviar</button>
+                <button mat-raised-button type="submit" [disabled]="registroCliente.get('dni')?.invalid 
+                            || registroCliente.get('nombre')?.invalid 
+                            || registroCliente.get('apellido1')?.invalid
+                            || registroCliente.get('telefono')?.invalid
+                            || registroCliente.get('email')?.invalid" [ngClass]="boton">Enviar</button>
             </mat-card-actions>
         </mat-card>
-    </mat-card>
-</form>
+
+    </form>
+</div>

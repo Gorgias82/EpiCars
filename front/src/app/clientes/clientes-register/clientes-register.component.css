@@ -7,3 +7,15 @@
     background: rgb(70, 160, 181);
     font-size: medium;
   }
+
+  #main{
+    
+    text-align: center;
+    margin: 30px auto;
+  
+  }
+
+  #titulo{
+    text-align: center;
+    margin: 0 auto;
+  }

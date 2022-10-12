@@ -123,7 +123,7 @@ namespace EpicarsAPI.Controllers
             {
                 var existeDocumento = _context.Cliente.Where(c => c.documento == cliente.documento).SingleOrDefault();
 
-                if (existeDocumento != null)
+                if (existeDocumento != null && existeDocumento.id != cliente.id)
                 {
                     return BadRequest(new { mensaje = "Ya existe un cliente con ese dni o nie" });
                 }
@@ -149,7 +149,7 @@ namespace EpicarsAPI.Controllers
                 return BadRequest(new { mensaje = "No se ha podido modificar el cliente correctamente" });
             }
 
-            return Ok();
+            return Ok(result);
 
         }
 
@@ -175,7 +175,7 @@ namespace EpicarsAPI.Controllers
                 return BadRequest(new { mensaje = "No se ha podido eliminar el cliente correctamente" });
             }
 
-            return Ok();
+            return Ok(result);
 
         }
     }

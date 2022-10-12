@@ -4,6 +4,7 @@ import { Cliente } from 'src/app/Models/cliente.model';
 import { ClientesService } from 'src/app/Services/clientes.service';
 import {MatPaginator} from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class ClientesMainComponent implements OnInit {
   dataSource : MatTableDataSource<Cliente>
   dsClientes : Cliente[]
   updatedCliente : Cliente
-  constructor(private clientesService : ClientesService, private router : Router) { }
+  constructor(private clientesService : ClientesService, private router : Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {
 
@@ -58,6 +59,18 @@ export class ClientesMainComponent implements OnInit {
    localStorage.setItem("updatedCliente", JSON.stringify(this.updatedCliente));
    this.router.navigateByUrl('clientes/registro')
    
+  }
+
+  deleteCliente(id : number, nombre : string){
+    if(confirm("¿Esta seguro que quiere eliminar el cliente " + nombre + "?")){
+      this.clientesService.deleteCliente(id).subscribe(response => {
+        if(response){
+          this.toastr.success("El cliente se ha eliminado correctamente");
+          this.cargarClientes();
+        }
+      })
+    }
+
   }
 
 

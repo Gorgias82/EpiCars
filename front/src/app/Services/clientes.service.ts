@@ -24,4 +24,12 @@ export class ClientesService {
    insertCliente(cliente : Cliente) : Observable<any> {
     return this.http.post(this.baseUrl + this.path, cliente);
    }
+
+   updateCliente(cliente : Cliente) : Observable<any> {
+    return this.http.put(this.baseUrl + this.path, cliente);
+   }
+
+   deleteCliente(id : number) : Observable<any> {
+    return this.http.delete(this.baseUrl + this.path + "/" + id)
+   }
 }
