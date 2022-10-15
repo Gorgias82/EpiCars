@@ -24,6 +24,7 @@ namespace EpicarsAPI.Data
         }
 
         public DbSet<Cliente> Cliente { get; set; }
+        public DbSet<Vehiculo> Vehiculo { get; set; }
 
     }
 
