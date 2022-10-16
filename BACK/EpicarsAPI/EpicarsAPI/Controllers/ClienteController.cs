@@ -56,21 +56,21 @@ namespace EpicarsAPI.Controllers
                 return BadRequest(new { mensaje = "Debe introducir el documento(DNI o NIE) del cliente" });
             }
 
-            var existeDocumento = _context.Cliente.Where(c => c.documento == cliente.documento).SingleOrDefault();
+            var existeDocumento = _context.Cliente.Where(c => c.documento.ToUpper() == cliente.documento.ToUpper()).SingleOrDefault();
 
             if( existeDocumento != null)
             {
                 return BadRequest(new { mensaje = "Ya existe un cliente con ese dni o nie" });
             }
 
-            var existeTelefono = _context.Cliente.Where(c => c.telefono == cliente.telefono).SingleOrDefault();
+            var existeTelefono = _context.Cliente.Where(c => c.telefono.ToUpper() == cliente.telefono.ToUpper()).SingleOrDefault();
 
             if (existeTelefono != null)
             {
                 return BadRequest(new { mensaje = "Ya existe un cliente con ese telefono" });
             }
 
-            var existeEmail = _context.Cliente.Where(c => c.email == cliente.email).SingleOrDefault();
+            var existeEmail = _context.Cliente.Where(c => c.email.ToUpper() == cliente.email.ToUpper()).SingleOrDefault();
 
             if (existeEmail != null && existeEmail.email.Length > 0)
             {
@@ -121,7 +121,7 @@ namespace EpicarsAPI.Controllers
             }
             if (cliente.documento != null && cliente.documento.Length >= 0)
             {
-                var existeDocumento = _context.Cliente.Where(c => c.documento == cliente.documento).SingleOrDefault();
+                var existeDocumento = _context.Cliente.Where(c => c.documento.ToUpper() == cliente.documento.ToUpper()).SingleOrDefault();
 
                 if (existeDocumento != null && existeDocumento.id != cliente.id)
                 {
