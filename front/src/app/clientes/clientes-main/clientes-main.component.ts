@@ -5,7 +5,7 @@ import { ClientesService } from 'src/app/Services/clientes.service';
 import {MatPaginator} from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-
+import Swal from 'sweetalert2/dist/sweetalert2.js';  
 
 @Component({
   selector: 'app-clientes-main',
@@ -62,14 +62,32 @@ export class ClientesMainComponent implements OnInit {
   }
 
   deleteCliente(id : number, nombre : string){
-    if(confirm("¿Esta seguro que quiere eliminar el cliente " + nombre + "?")){
-      this.clientesService.deleteCliente(id).subscribe(response => {
-        if(response){
-          this.toastr.success("El cliente se ha eliminado correctamente");
-          this.cargarClientes();
-        }
-      })
-    }
+    Swal.fire({
+      title: "¿Esta seguro que quiere eliminar el cliente " + nombre + "?",
+      text: "Sera eliminado permanentemente",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: "Si, eliminalo",
+      cancelButtonText: 'No, he cambiado de opinión'
+    }).then((result) => {
+      if(result.value){
+        this.clientesService.deleteCliente(id).subscribe(response => {
+          if(response){
+            this.toastr.success("El cliente se ha eliminado correctamente");
+            this.cargarClientes();
+          }
+        })
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Operación cancelada',
+          'No se ha eliminado el registro'
+        )
+      }
+    })
+
+
+
+    
 
   }
 
