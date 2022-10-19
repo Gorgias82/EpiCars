@@ -25,13 +25,12 @@ this.creaFormulario();
   creaFormulario(){
     this.registroCliente = this.fb.group({
       dni: ['', Validators.required],
-      nombre: ['', Validators.required],
-      apellido1: ['', Validators.required],
-      apellido2: '',
-      telefono: ['', Validators.required],
+      nombre: ['', Validators.compose([Validators.required, Validators.pattern("[a-zA-Z]*")])],
+      apellido1: ['', Validators.compose([Validators.required, Validators.pattern("[a-zA-Z]*")])],
+      apellido2: ['', Validators.pattern("[a-zA-Z]*")],
+      telefono: ['',  Validators.compose([Validators.required, Validators.pattern("[+]?[0-9]{2}[ -]?[0-9]*")])],
       direccion: '',
       email : ['', Validators.email]
-
     });
   }
 
@@ -43,14 +42,13 @@ this.creaFormulario();
       this.titulo = "Modifica el cliente " + this.updatedCliente.nombre + " " + this.updatedCliente.apellido1;
       this.boton = "modify-submit";
       this.registroCliente = this.fb.group({
-        dni: [this.updatedCliente.documento, Validators.required],
-        nombre: [this.updatedCliente.nombre, Validators.required],
-        apellido1: [this.updatedCliente.apellido1, Validators.required],
-        apellido2: this.updatedCliente.apellido2,
-        telefono: [this.updatedCliente.telefono, Validators.required],
+        dni: [this.updatedCliente.documento, Validators.required ],
+        nombre: [this.updatedCliente.nombre, Validators.compose([Validators.required, Validators.pattern("[a-zA-Z]*")])] ,
+        apellido1: [this.updatedCliente.apellido1, Validators.compose([Validators.required, Validators.pattern("[a-zA-Z]*")])],
+        apellido2: [this.updatedCliente.apellido2, Validators.pattern("[a-zA-Z]*")],
+        telefono: [this.updatedCliente.telefono, Validators.compose([Validators.required, Validators.pattern("[+]?[0-9]{2}[ ]?[-]?[0-9]*")]) ],
         direccion: this.updatedCliente.direccion,
-        email : [this.updatedCliente.email, Validators.email]
-  
+        email : [this.updatedCliente.email, Validators.email] 
       });
       localStorage.removeItem("updatedCliente")
     }
@@ -67,6 +65,11 @@ this.creaFormulario();
       telefono : form.get('telefono')?.value as unknown as string,
       email : form.get('email')?.value as unknown as string,
       direccion : form.get('direccion')?.value as unknown as string,
+    }
+    this.cliente.nombre = this.cliente.nombre[0].toUpperCase() + this.cliente.nombre.substring(1).toLowerCase();
+    this.cliente.apellido1 = this.cliente.apellido1[0].toUpperCase() + this.cliente.apellido1.substring(1).toLowerCase();
+    if(this.cliente.apellido2.length > 0){
+      this.cliente.apellido2 = this.cliente.apellido2[0].toUpperCase() + this.cliente.apellido2.substring(1).toLowerCase();
     }
     if(this.isModificacion){
       // aqui se llama al servicio de updating
