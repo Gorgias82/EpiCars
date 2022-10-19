@@ -73,7 +73,11 @@ export class ClientesMainComponent implements OnInit {
       if(result.value){
         this.clientesService.deleteCliente(id).subscribe(response => {
           if(response){
-            this.toastr.success("El cliente se ha eliminado correctamente");
+            // this.toastr.success("El cliente se ha eliminado correctamente");
+            Swal.fire({
+              title : "El cliente se ha eliminado correctamente",
+              icon : 'success'
+            })
             this.cargarClientes();
           }
         })

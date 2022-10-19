@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Cliente } from 'src/app/Models/cliente.model';
 import { ClientesService } from 'src/app/Services/clientes.service';
+import Swal from 'sweetalert2/dist/sweetalert2.js';  
 
 @Component({
   selector: 'app-clientes-register',
@@ -76,7 +77,10 @@ this.creaFormulario();
       this.cliente.id = this.updatedCliente.id;
       this.clientesService.updateCliente(this.cliente).subscribe(response => {
         if(response){
-          this.toastr.success('El cliente se ha modificado correctamente')
+          Swal.fire({
+            title : 'El cliente se ha modificado correctamente',
+            icon : 'success'
+          })
           this.isModificacion = false;
           this.titulo = "Crear nuevo cliente";
           this.boton = "add-submit";
@@ -87,7 +91,10 @@ this.creaFormulario();
     }else{
       this.clientesService.insertCliente(this.cliente).subscribe(response => {      
         if(response){
-          this.toastr.success('El cliente se ha introducido correctamente')
+          Swal.fire({
+            title : 'El cliente se ha introducido correctamente',
+            icon : 'success'
+          })
           this.creaFormulario();
           // this.router.navigateByUrl('clientes')
         }

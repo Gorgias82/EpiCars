@@ -8,6 +8,8 @@ import {
 import { catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import Swal from 'sweetalert2/dist/sweetalert2.js';  
+
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -19,10 +21,17 @@ export class ErrorInterceptor implements HttpInterceptor {
       catchError(error => {
         
         if(error.status == 400 && error.error.mensaje){
-          console.log(error.error.mensaje)
-            this.toastr.error(error.error.mensaje,error.status)
+            Swal.fire({
+              title : error.error.mensaje,
+              text :  error.status,
+              icon : 'error'
+            })
         }else{
-          this.toastr.error(error.statusText, error.status)
+          Swal.fire({
+            title : error.statusText,
+            text :  error.status,
+            icon : 'error'
+          })
         }
         return throwError(() => 'err')
       })
