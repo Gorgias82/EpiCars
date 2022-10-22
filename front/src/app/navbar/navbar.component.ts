@@ -21,7 +21,7 @@ export class NavbarComponent implements OnInit {
     {
       label: 'Coches',
       icon: 'directions_car',
-      link : '',
+      link : '/vehiculos',
       showOnMobile: false,
       showOnTablet: true,
       showOnDesktop: true
