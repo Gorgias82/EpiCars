@@ -27,8 +27,10 @@ namespace EpicarsAPI.Controllers
         public async Task<ActionResult<List<Vehiculo>>> GetVehiculos()
         {
             List<Vehiculo> vehiculos;
-
-            vehiculos = await _context.Vehiculo.ToListAsync();
+                            
+            vehiculos = await _context.Vehiculo
+                .Include("gastos")
+                .ToListAsync();
 
             return Ok(vehiculos);
         }
@@ -59,6 +61,7 @@ namespace EpicarsAPI.Controllers
             Vehiculo existeBastidor = _context.Vehiculo.Where(v => v.bastidor.ToUpper() == vehiculo.bastidor.ToUpper()).FirstOrDefault();
 
             if (existeBastidor != null) return BadRequest(new { mensaje = "Ya hay un vehículo registrado con ese número de bastidor" });
+
 
             _context.Vehiculo.Add(vehiculo);
             var result = await _context.SaveChangesAsync();

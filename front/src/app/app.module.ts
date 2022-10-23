@@ -1,5 +1,5 @@
 //Genericos
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule,  } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -29,14 +29,23 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field'; 
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+import localeEsExtra from '@angular/common/locales/extra/es';
+import { VehiculosModule } from './vehiculos/vehiculos.module';
+
+registerLocaleData(localeEs, 'es', localeEsExtra);
+
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent
 
+
   ],
   imports: [
     ClientesModule,
+    VehiculosModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -56,7 +65,8 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
 
   ],
   providers: [
-    {provide : HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+    {provide : HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    { provide: LOCALE_ID, useValue: 'es'}
   ],
   bootstrap: [AppComponent]
 })

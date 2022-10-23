@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,6 +53,12 @@ namespace EpicarsAPI
                 //toma los datos de appsettings.json
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddMvc()
+                .AddNewtonsoftJson(
+                  options => {
+                      options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                  });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -4,7 +4,6 @@ import { Cliente } from 'src/app/Models/cliente.model';
 import { ClientesService } from 'src/app/Services/clientes.service';
 import {MatPaginator} from '@angular/material/paginator';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2/dist/sweetalert2.js';  
 
 @Component({
@@ -21,7 +20,7 @@ export class ClientesMainComponent implements OnInit {
   dataSource : MatTableDataSource<Cliente>
   dsClientes : Cliente[]
   updatedCliente : Cliente
-  constructor(private clientesService : ClientesService, private router : Router, private toastr: ToastrService) { }
+  constructor(private clientesService : ClientesService, private router : Router) { }
 
   ngOnInit(): void {
 

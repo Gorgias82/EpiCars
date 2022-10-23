@@ -1,1 +1,149 @@
-<p>vehiculos-main works!</p>
+<mat-spinner *ngIf="!cargado"></mat-spinner>
+<mat-form-field appearance="standard">
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="filtro" #input>
+</mat-form-field>
+<table mat-table [dataSource]="dataSource" *ngIf="cargado" multiTemplateDataRows class="mat-elevation-z8">
+    <ng-container matColumnDef="matricula">
+        <th mat-header-cell *matHeaderCellDef> Matrícula </th>
+        <td mat-cell *matCellDef="let element"> {{element.matricula}} </td>
+    </ng-container>
+    <ng-container matColumnDef="marca">
+        <th mat-header-cell *matHeaderCellDef> Marca </th>
+        <td mat-cell *matCellDef="let element"> {{element.marca}} </td>
+    </ng-container>
+    <ng-container matColumnDef="modelo">
+        <th mat-header-cell *matHeaderCellDef> Modelo </th>
+        <td mat-cell *matCellDef="let element"> {{element.modelo}} </td>
+    </ng-container>
+    <ng-container matColumnDef="bastidor">
+        <th mat-header-cell *matHeaderCellDef> Bastidor </th>
+        <td mat-cell *matCellDef="let element"> {{element.bastidor}} </td>
+    </ng-container>
+    <ng-container matColumnDef="kilometraje">
+        <th mat-header-cell *matHeaderCellDef> Kilometraje </th>
+        <td mat-cell *matCellDef="let element"> {{element.kilometraje}} </td>
+    </ng-container>
+    <ng-container matColumnDef="matriculacion">
+        <th mat-header-cell *matHeaderCellDef> Fecha de matriculacion </th>
+        <td mat-cell *matCellDef="let element"> {{element.matriculacion | date}} </td>
+    </ng-container>
+    <ng-container matColumnDef="itv">
+        <th mat-header-cell *matHeaderCellDef> Fecha de la última ITV </th>
+        <td mat-cell *matCellDef="let element"> {{element.itv | date}} </td>
+    </ng-container>
+    <ng-container matColumnDef="precioCompra">
+        <th mat-header-cell *matHeaderCellDef> Precio de compra </th>
+        <td mat-cell *matCellDef="let element"> {{element.precioCompra}} </td>
+    </ng-container>
+    <ng-container matColumnDef="precioVenta">
+        <th mat-header-cell *matHeaderCellDef> Precio de venta </th>
+        <td mat-cell *matCellDef="let element"> {{element.precioVenta}} </td>
+    </ng-container>
+    <ng-container matColumnDef="fechaCompra">
+        <th mat-header-cell *matHeaderCellDef> Fecha de compra </th>
+        <td mat-cell *matCellDef="let element"> {{element.fechaCompra | date}} </td>
+    </ng-container>
+    <ng-container matColumnDef="fechaVenta">
+        <th mat-header-cell *matHeaderCellDef> Fecha de venta </th>
+        <td mat-cell *matCellDef="let element"> {{element.venta | date}} </td>
+    </ng-container>
+    <ng-container matColumnDef="gestionVenta">
+        <th mat-header-cell *matHeaderCellDef> Gestión de venta </th>
+        <td mat-cell *matCellDef="let element">
+            
+                <mat-checkbox class="example-margin" checked="element.gestionVenta" [disabled]="true">Gestion de venta
+                </mat-checkbox>
+            
+        </td>
+    </ng-container>
+    <!-- Columna iconos -->
+    <ng-container matColumnDef="iconos">
+        <th mat-header-cell *matHeaderCellDef> <button mat-button matTooltip="Añade un vehículo"
+                matTooltipClass="add-tooltip" (click)="addVehiculo()">
+                <mat-icon>add_box</mat-icon>
+            </button> </th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-button
+                matTooltip="Modifica el vehículo {{element.marca}} {{element.modelo}} con matrícula {{element.matricula}} "
+                matTooltipClass="modify-tooltip" (click)="updateVehiculo(element.id)">
+                <mat-icon>create</mat-icon>
+            </button>
+            <button mat-button
+                matTooltip="Elimina el vehículo {{element.marca}} {{element.modelo}} con matrícula {{element.matricula}}"
+                matTooltipClass="delete-tooltip" (click)="deleteVehiculo(element.id)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="expand">
+        <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-icon-button aria-label="expand row"
+                (click)="expandedElement = expandedElement === element ? null : element; desplegarDetalles($event); $event.stopPropagation()">
+                <!-- ; desplegarDetalles($event); $event.stopPropagation() -->
+                <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <!-- El dropdown es otra table con los gastos del vehiculo -->
+    <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+            <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                <!-- [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'" -->
+                <table mat-table [dataSource]="element.gastos" class="table-detalles mat-elevation-z8">
+                    <ng-container matColumnDef="descripcion">
+                        <th mat-header-cell *matHeaderCellDef> Gasto </th>
+                        <td mat-cell *matCellDef="let gasto"> {{gasto.descripcion}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="importe">
+                        <th mat-header-cell *matHeaderCellDef> Importe </th>
+                        <td mat-cell *matCellDef="let gasto"> {{gasto.importe}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="fecha">
+                        <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                        <td mat-cell *matCellDef="let gasto"> {{gasto.fecha | date}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="metodoPago">
+                        <th mat-header-cell *matHeaderCellDef> Metodo de pago </th>
+                        <td mat-cell *matCellDef="let gasto"> {{gasto.metodoPago}} </td>
+                    </ng-container>
+                    <!-- Columna iconos -->
+                    <ng-container matColumnDef="iconos">
+                        <th mat-header-cell *matHeaderCellDef>  </th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-button matTooltip="Añade un gasto"
+                                matTooltipClass="add-tooltip" (click)="addGasto()">
+                                <mat-icon>add_box</mat-icon>
+                            </button>
+                            <button mat-button
+                                matTooltip="Modifica el gasto {{element.descripcion}} "
+                                matTooltipClass="modify-tooltip" (click)="updateGasto(element.id)">
+                                <mat-icon>create</mat-icon>
+                            </button>
+                            <button mat-button
+                                matTooltip="Elimina el gasto {{element.descripcion}} "
+                                matTooltipClass="delete-tooltip" (click)="deleteGasto(element.id)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="columnsToDisplayGastos"></tr>
+                    <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplayGastos"></tr>
+
+                </table>
+            </div>
+        </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr> -->
+    <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="example-element-row"
+        [class.example-expanded-row]="expandedElement === element"
+        (click)="expandedElement = expandedElement === element ? null : element; desplegarDetalles($event)">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+</table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of vehiculos">
+</mat-paginator>

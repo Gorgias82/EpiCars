@@ -20,11 +20,22 @@ namespace EpicarsAPI.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<GastoVehiculo>()
+                .HasOne(g => g.vehiculo)
+                .WithMany(v => v.gastos)
+                .HasForeignKey(g => g.vehiculo_id);
+
+            modelBuilder.Entity<Vehiculo>()
+                .HasMany(v => v.gastos)
+                .WithOne(g => g.vehiculo)
+                .HasForeignKey(v => v.id);
 
         }
 
         public DbSet<Cliente> Cliente { get; set; }
         public DbSet<Vehiculo> Vehiculo { get; set; }
+        public DbSet<GastoVehiculo> GastoVehiculo { get; set; }
+
 
     }
 
