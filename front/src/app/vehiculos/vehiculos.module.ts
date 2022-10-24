@@ -12,6 +12,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatCardModule} from '@angular/material/card'; 
 import {MatCheckboxModule} from '@angular/material/checkbox'; 
+import {MatDatepickerModule} from '@angular/material/datepicker'; 
+import {MatNativeDateModule} from '@angular/material/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
 import { DatePipe } from '@angular/common';
@@ -19,12 +21,17 @@ import { DatePipe } from '@angular/common';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import localeEsExtra from '@angular/common/locales/extra/es';
+import { VehiculosRegisterComponent } from './vehiculos-register/vehiculos-register.component';
+
+//Flexlayout
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 registerLocaleData(localeEs, 'es', localeEsExtra);
 
 @NgModule({
   declarations: [
-    VehiculosMainComponent
+    VehiculosMainComponent,
+    VehiculosRegisterComponent
   ],
   imports: [
     CommonModule,
@@ -37,12 +44,15 @@ registerLocaleData(localeEs, 'es', localeEsExtra);
     MatTooltipModule,
     MatCardModule,
     MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     FormsModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
     DatePipe,
     BrowserModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FlexLayoutModule
 
   ],
   providers: [

@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import { Vehiculo } from 'src/app/Models/vehiculo.model';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vehiculos-main',
@@ -33,7 +34,7 @@ export class VehiculosMainComponent implements OnInit {
   expandedElement: Vehiculo | null = null;
   columnsToDisplayGastos : string[] = ['descripcion','importe','fecha','metodoPago','iconos']
 
-  constructor(private vehiculosService : VehiculoService) { }
+  constructor(private vehiculosService : VehiculoService, private router : Router) { }
 
   ngOnInit(): void {
     this.cargarVehiculos();
@@ -95,7 +96,7 @@ export class VehiculosMainComponent implements OnInit {
     throw new Error('Method not implemented.');
     }
     addVehiculo() {
-    throw new Error('Method not implemented.');
+      this.router.navigateByUrl('vehiculos/registro')
     }
 
     deleteGasto(arg0: any) {

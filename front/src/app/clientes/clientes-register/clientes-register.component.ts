@@ -20,7 +20,7 @@ export class ClientesRegisterComponent implements OnInit {
   titulo : string = "Crear nuevo cliente";
   boton : string = "add-submit";
   constructor(private fb: FormBuilder, private clientesService : ClientesService, private router : Router,private toastr: ToastrService) { 
-this.creaFormulario();
+    this.creaFormulario();
   }
 
   creaFormulario(){
@@ -37,7 +37,7 @@ this.creaFormulario();
 
   ngOnInit(): void {
     console.log(localStorage.getItem("updatedCliente"));
-    if(localStorage.getItem("updatedCliente")){
+    if(sessionStorage.getItem("updatedCliente")){
       this.updatedCliente = JSON.parse(localStorage.getItem("updatedCliente"));
       this.isModificacion = true;
       this.titulo = "Modifica el cliente " + this.updatedCliente.nombre + " " + this.updatedCliente.apellido1;
@@ -51,7 +51,7 @@ this.creaFormulario();
         direccion: this.updatedCliente.direccion,
         email : [this.updatedCliente.email, Validators.email] 
       });
-      localStorage.removeItem("updatedCliente")
+      sessionStorage.removeItem("updatedCliente")
     }
     
   }
