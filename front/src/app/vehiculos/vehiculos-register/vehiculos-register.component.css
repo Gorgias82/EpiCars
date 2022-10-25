@@ -5,3 +5,124 @@
 mat-card{
     height: 100%;
 }
+
+
+
+  .text .textoCliente{
+    width: 100%;
+    font-size: 14pt;
+    line-height: 1.1em;
+    margin-top: 2px;
+    margin-bottom: 0px;
+    font-weight: 700;
+  }
+
+   
+  .cliente{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    width: 40%;
+    height: 100px;
+    letter-spacing: 0.5px;
+    background: rgb(74, 163, 74);
+    color: white;
+    margin-top: -9.5vh;
+    margin : 0 auto;
+  }
+
+  #cliente.clienteXL{
+    margin-top: 1%;
+    height: 100px;
+    min-width: 50px;
+  }
+  #cliente span p{
+    font-size: small;
+  }
+  
+  #cliente-changed.clienteXL{
+    margin-top: 29%;
+    height: 61px;
+    padding: 5% 2% 0 0;
+  }
+
+  .cliente:hover,
+  .cliente:active{
+    filter: brightness(90%);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+
+  /* CLIENTE CAMBIADO */
+
+.cliente-changed{
+    background: var(--white);
+    border-left: 4px solid var(--greenLight);
+    display: flex;
+    justify-content: space-evenly;
+    padding: 12px 16px 12px 0px;
+    border-radius: 0 4px 4px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+    margin-top: 3vh;
+  }
+  .cliente-changed:active{
+    filter: brightness(90%);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .cliente-changed:active{
+    filter: brightness(90%);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  
+  .cliente-changed .img-text{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    padding-left: 16px;
+  }
+  .cliente-changed .img-text img{
+    width: 32px;
+    border-radius: 50%;
+    margin-right: 8px;
+  }
+  
+  .cliente-changed .img-text .text h2,
+  .cliente-changed .img-text .text h3{
+    font-size: 10pt;
+    /* border: 1px solid red; */
+  }
+  
+  .cliente-changed .img-text .text h2{
+    width: 100%;
+    font-size: 11pt;
+    line-height: 1.1em;
+    font-weight: 700;
+    color: var(--greenMedium);
+  }
+  .cliente-changed .img-text .text h3{
+    color: var(--black80);
+    width: 100%;
+    font-size: 9pt;
+    line-height: 1.1em;
+    margin-top: 2px;
+    margin-bottom: 0px;
+    font-weight: 700;
+  }
+
+  .text span{
+    width: 100%;
+    font-size: 9pt;
+    line-height: 1.1em;
+    margin-top: 2px;
+    margin-bottom: 0px;
+    font-weight: 700;
+  }

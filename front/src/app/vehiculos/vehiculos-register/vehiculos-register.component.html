@@ -98,6 +98,16 @@
                         </mat-error>
                       </mat-form-field>               
                 </mat-card-content>
+                <button type="button" id="cliente" class="cliente clienteXL" (click)="seleccionaCliente()">
+                    <div class="text" *ngIf="(clientesService.currentClient$ | async) === null">
+                      <mat-icon id="icono">person</mat-icon>
+                      <span class="textoCliente">Seleccione el cliente vendedor</span>
+                    </div>
+                    <div class="text" *ngIf="(clientesService.currentClient$ | async) as Cliente">
+                      <p class="textoCliente">{{ Cliente.nombre + ' ' + Cliente.apellido1 }} </p>
+                      <p class="textoCliente"><strong class="textoCliente">NIF/CIF:</strong> {{ Cliente.documento }}</p>
+                    </div>
+                  </button>
             </mat-card>
         </div>
         <div fxFlex class="columna">
@@ -143,16 +153,22 @@
                         </mat-error>
                     </mat-form-field>
                 </mat-card-content>
+                <mat-card-content>
+                  
+                        <mat-label>Gestión de venta: </mat-label>
+                        <mat-checkbox matTooltip="Marque esta casilla si una gestión de venta"  formControlName="gestionVenta" name="gestionVenta"></mat-checkbox>
+                        <!-- <mat-hint>Marque esta casilla si una gestión de venta</mat-hint> -->
+                
+                </mat-card-content>
             </mat-card>
         </div>
 
 
     </div>
-
+    <mat-card class="columna">
+        <mat-card-actions class="mat-card-button-login">
+            <button mat-raised-button type="submit" [disabled]="registroVehiculo.get('matricula')?.invalid"
+                [ngClass]="boton">Enviar</button>
+        </mat-card-actions>
+    </mat-card>
 </form>
-<mat-card class="columna">
-    <mat-card-actions class="mat-card-button-login">
-        <button mat-raised-button type="submit" [disabled]="registroVehiculo.get('matricula')?.invalid"
-            [ngClass]="boton">Enviar</button>
-    </mat-card-actions>
-</mat-card>

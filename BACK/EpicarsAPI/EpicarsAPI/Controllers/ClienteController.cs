@@ -33,6 +33,51 @@ namespace EpicarsAPI.Controllers
             return Ok(clientes);
         }
 
+
+        [Route("List")]
+        [HttpGet]
+        public async Task<ActionResult<List<Cliente>>> GetClientesList([FromQuery] int pageIndex, int pageSize)
+        {
+            List<Cliente> clientes;
+            if (pageIndex >= 0 && pageSize > 0)
+            {
+                int comienzo = pageIndex * pageSize;
+                clientes = await _context.Cliente
+                    .OrderBy(c => c.apellido1)
+                    .Skip(comienzo)
+                    .Take(pageSize)
+                    .ToListAsync();
+            }
+            else
+            {
+                clientes = await _context.Cliente
+                  .OrderBy(c => c.apellido1)
+                  .ToListAsync();
+
+            }
+
+            return Ok(clientes);
+
+
+        }
+
+        [Route("FindById")]
+        [HttpGet]
+        public async Task<ActionResult<Cliente>> FindById([FromQuery] int id)
+        {
+            if (id <= 0) return BadRequest(new { mensaje = "Debe seleccionar un cliente" });
+
+            var cliente = await _context.Cliente
+                            .Where(c => c.id == id)
+                            .SingleOrDefaultAsync();
+
+            if (cliente == null) return BadRequest(new { mensaje = "No existe el cliente seleccionado" });
+
+
+            return Ok(cliente);
+
+        }
+
         [HttpPost]
         public async Task<ActionResult> InsertCliente([FromBody] Cliente cliente)
         {

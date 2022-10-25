@@ -9,13 +9,21 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button'; 
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatCardModule} from '@angular/material/card'; 
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { ClientesRegisterComponent } from './clientes-register/clientes-register.component'; 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ClientesListComponent } from './clientes-list/clientes-list.component';
+import { SearchFilterPipe } from './search-filter.pipe';
+import { RouterModule } from '@angular/router';
+//Flexlayout
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
     ClientesMainComponent,
-    ClientesRegisterComponent
+    ClientesRegisterComponent,
+    ClientesListComponent,
+    SearchFilterPipe
   ],
   imports: [
     CommonModule,
@@ -27,8 +35,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatButtonModule,
     MatTooltipModule,
     MatCardModule,
+    MatProgressSpinnerModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule,
+    FlexLayoutModule
+
 
   ]
 })

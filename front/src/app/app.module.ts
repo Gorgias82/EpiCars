@@ -43,6 +43,9 @@ registerLocaleData(localeEs, 'es', localeEsExtra);
 
 
   ],
+  exports : [
+
+  ],
   imports: [
     ClientesModule,
     VehiculosModule,

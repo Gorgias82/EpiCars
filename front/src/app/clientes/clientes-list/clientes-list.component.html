@@ -1,0 +1,55 @@
+<div class="container container-cliente" >
+    <div class="row">
+        <div class="col-6">
+            <app-clientes-register></app-clientes-register>
+        </div>
+        <div class="col-6">
+            <div class="cabecera">
+                <div id="cerrarSesion" class="cerrar" (click)="cerrarSesion()" routerLink="/vehiculos/registro"
+                    routerLinkActive="active">
+                    <mat-icon>clear</mat-icon>
+                    Cerrar Sesión
+                </div>
+        
+                <div class="volver" routerLink="/vehiculos/registro" routerLinkActive="active">
+                    <mat-icon>undo</mat-icon>
+                    Volver
+                </div>
+                <div class="refrescar" (click)="ngAfterViewInit()">
+                    <mat-icon>refresh</mat-icon>
+                    Recargar
+                </div>
+                <div class="search">
+                    <label for="search">Buscar por apellido</label>
+                    <!-- <img src="../assets/images/productos/lupa.svg" alt="Lupa"> -->
+                    <input type="text" name="search" [(ngModel)]="searchTerm" (input)="search(searchTerm)" placeholder="" />
+                </div>
+               
+                <div *ngIf="!cargado">
+                    <mat-spinner></mat-spinner>
+                </div>
+            </div>
+            <!-- CLIENTES -->
+            <div class="clientes-box scroll" *ngIf="cargado">
+                <div *ngFor="let cliente of clientes | searchFilter: searchTerm; index as i" id="c{{cliente.id}}"
+                    (click)="onClickCliente(cliente.id)" routerLink="/vehiculos/registro" class="cliente">
+                    <div class="img-text">
+                        <!-- <img src="{{cliente.img}}" alt="{{cliente.nombre}}"> -->
+                        <div class="text">
+                            <h2>{{cliente.nombre + ' ' + cliente.apellido1}}</h2>
+                            <h3><strong>NIF/CIF: </strong> {{cliente.documento}}</h3>
+                        </div>
+                    </div>
+                    <div class="sp-btn-ok">
+                        <mat-icon>check</mat-icon>
+                    </div>
+                </div>
+                <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons aria-label="Select page of clientes"
+                    (click)="onClickPaginator()" [length]="allClientes.length">
+                </mat-paginator>
+            </div>
+        </div>
+     
+    </div>
+    
+</div>

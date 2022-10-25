@@ -96,6 +96,7 @@ export class ClientesRegisterComponent implements OnInit {
             icon : 'success'
           })
           this.creaFormulario();
+     
           // this.router.navigateByUrl('clientes')
         }
       });

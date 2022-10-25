@@ -23,6 +23,7 @@ import localeEs from '@angular/common/locales/es';
 import localeEsExtra from '@angular/common/locales/extra/es';
 import { VehiculosRegisterComponent } from './vehiculos-register/vehiculos-register.component';
 
+
 //Flexlayout
 import { FlexLayoutModule } from '@angular/flex-layout';
 

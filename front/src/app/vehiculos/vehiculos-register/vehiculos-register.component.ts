@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ClientesService } from 'src/app/Services/clientes.service';
 
 @Component({
   selector: 'app-vehiculos-register',
@@ -10,7 +12,7 @@ export class VehiculosRegisterComponent implements OnInit {
   registroVehiculo: FormGroup
   titulo : string = "Crea un vehículo"
   boton : string
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder,public clientesService : ClientesService, private router :Router) { }
 
   ngOnInit(): void {
     this.cargarFormulario()
@@ -33,6 +35,10 @@ export class VehiculosRegisterComponent implements OnInit {
     })
      
 
+  }
+
+  seleccionaCliente(){
+    this.router.navigateByUrl('clientes/list');
   }
 
   onSubmit(form : FormGroup){
