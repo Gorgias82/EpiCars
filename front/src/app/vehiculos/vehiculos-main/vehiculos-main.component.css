@@ -17,6 +17,10 @@
   table {
     width: 100%;
   }
+
+.columna{
+    text-align: center;
+  }
   
   tr.example-detail-row {
     height: 0;
@@ -59,9 +63,9 @@
   .mat-progress-spinner circle, .mat-spinner circle {
     stroke: green;
   }
-  .table-detalles{
+  /* .table-detalles{
     text-align: center !important;
-  }
+  } */
   .table-detalles td, th{
     padding-left: 30px !important;
     padding-right: 30px !important;

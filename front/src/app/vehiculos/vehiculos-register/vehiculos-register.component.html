@@ -1,174 +1,185 @@
-<h1 class="columna"> {{titulo}} </h1>
-<form [formGroup]="registroVehiculo" (ngSubmit)="onSubmit(registroVehiculo)">
-
-    <div fxLayout="row">
 
 
-        <div fxFlex class="columna">
-            <mat-card>
-                <mat-card-content>
-                    <mat-form-field>
-                        <mat-label>Matrícula:</mat-label>
-                        <input matInput placeholder="Matrícula" name="matricula" formControlName="matricula">
-                        <mat-hint>Introduzca la matrícula del vehículo</mat-hint>
-                        <mat-error *ngIf="registroVehiculo.get('matricula')?.invalid && (registroVehiculo.get('matricula')?.dirty 
-                            || registroVehiculo.get('matricula')?.touched)" required>
-                            Debe introducir la matrícula del vehículo
-                        </mat-error>
-                    </mat-form-field>
+    <h1 class="columna"> {{titulo}} </h1>
+    <form [formGroup]="registroVehiculo" (ngSubmit)="onSubmit(registroVehiculo)">
 
-                </mat-card-content>
-                <mat-card-content>
-                    <mat-form-field>
-                        <mat-label>Marca:</mat-label>
-                        <input matInput placeholder="Marca" name="marca" formControlName="marca">
-                        <mat-hint>Introduzca la marca del vehículo</mat-hint>
-                        <mat-error *ngIf="registroVehiculo.get('marca')?.invalid && (registroVehiculo.get('marca')?.dirty 
-                            || registroVehiculo.get('marca')?.touched)" required>
-                            Debe introducir la marca del vehículo
-                        </mat-error>
-                    </mat-form-field>
-                </mat-card-content>
-                <mat-card-content>
-                    <mat-form-field>
-                        <mat-label>Modelo:</mat-label>
-                        <input matInput placeholder="Modelo" name="modelo" formControlName="modelo">
-                        <mat-hint>Introduzca el modelo del vehículo</mat-hint>
-                        <mat-error *ngIf="registroVehiculo.get('modelo')?.invalid && (registroVehiculo.get('modelo')?.dirty 
-                            || registroVehiculo.get('modelo')?.touched)" required>
-                            Debe introducir la modelo del vehículo
-                        </mat-error>
-                    </mat-form-field>
-                </mat-card-content>
-                <mat-card-content>
-                    <mat-form-field>
-                        <mat-label>Bastidor:</mat-label>
-                        <input matInput placeholder="Bastidor" name="bastidor" formControlName="bastidor">
-                        <mat-hint>Introduzca el bastidor del vehículo</mat-hint>
-                        <mat-error *ngIf="registroVehiculo.get('bastidor')?.invalid && (registroVehiculo.get('bastidor')?.dirty 
-                            || registroVehiculo.get('bastidor')?.touched)" required>
-                            Debe introducir la bastidor del vehículo
-                        </mat-error>
-                    </mat-form-field>
-                </mat-card-content>
-            </mat-card>
+        <div class="row">
+    
+    
+            <div class="col-12 col-md-4">
+                <mat-card class="columna">
+                    <mat-card-content>
+                        <mat-form-field>
+                            <mat-label>Matrícula:</mat-label>
+                            <input matInput placeholder="Matrícula" name="matricula" formControlName="matricula">
+                            <mat-hint>Introduzca la matrícula del vehículo</mat-hint>
+                            <mat-error *ngIf="registroVehiculo.get('matricula')?.invalid && (registroVehiculo.get('matricula')?.dirty 
+                                || registroVehiculo.get('matricula')?.touched)" required>
+                                Debe introducir la matrícula del vehículo
+                            </mat-error>
+                        </mat-form-field>
+    
+                    </mat-card-content>
+                    <mat-card-content>
+                        <mat-form-field>
+                            <mat-label>Marca:</mat-label>
+                            <input matInput placeholder="Marca" name="marca" formControlName="marca">
+                            <mat-hint>Introduzca la marca del vehículo</mat-hint>
+                            <mat-error *ngIf="registroVehiculo.get('marca')?.invalid && (registroVehiculo.get('marca')?.dirty 
+                                || registroVehiculo.get('marca')?.touched)" required>
+                                Debe introducir la marca del vehículo
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-card-content>
+                    <mat-card-content>
+                        <mat-form-field>
+                            <mat-label>Modelo:</mat-label>
+                            <input matInput placeholder="Modelo" name="modelo" formControlName="modelo">
+                            <mat-hint>Introduzca el modelo del vehículo</mat-hint>
+                            <mat-error *ngIf="registroVehiculo.get('modelo')?.invalid && (registroVehiculo.get('modelo')?.dirty 
+                                || registroVehiculo.get('modelo')?.touched)" required>
+                                Debe introducir la modelo del vehículo
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-card-content>
+                    <mat-card-content>
+                        <mat-form-field>
+                            <mat-label>Bastidor:</mat-label>
+                            <input matInput placeholder="Bastidor" name="bastidor" formControlName="bastidor">
+                            <mat-hint>Introduzca el bastidor del vehículo</mat-hint>
+                            <mat-error *ngIf="registroVehiculo.get('bastidor')?.invalid && (registroVehiculo.get('bastidor')?.dirty 
+                                || registroVehiculo.get('bastidor')?.touched)" required>
+                                Debe introducir la bastidor del vehículo
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <div class="col-12 col-md-4">
+                <mat-card class="columna">
+                    <mat-card-content>
+                        <mat-form-field>
+                            <mat-label>Kilometraje:</mat-label>
+                            <input matInput type="number" placeholder="0" min="0" name="kilometraje"
+                                formControlName="kilometraje">
+                            <mat-hint>Introduzca el kilometraje del vehículo</mat-hint>
+                            <span matSuffix>Km</span>
+                            <mat-error *ngIf="registroVehiculo.get('kilometraje')?.invalid && (registroVehiculo.get('kilometraje')?.dirty 
+                                || registroVehiculo.get('kilometraje')?.touched)" required>
+                                Debe introducir el kilometraje del vehículo
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-card-content>
+                    <mat-card-content>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Fecha de matriculación</mat-label>
+                            <input matInput [matDatepicker]="picker" formControlName="matriculacion">
+                            <mat-hint>DD/MM/YYYY</mat-hint>
+                            <mat-datepicker-toggle matSuffix [for]="picker">
+                              <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error *ngIf="registroVehiculo.get('matriculacion')?.invalid && (registroVehiculo.get('matriculacion')?.dirty 
+                                || registroVehiculo.get('matriculacion')?.touched)" required>
+                                Debe introducir la fecha de matriculación del vehículo
+                            </mat-error>
+                          </mat-form-field>               
+                    </mat-card-content>
+                    <mat-card-content>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Fecha de la última ITV</mat-label>
+                            <input matInput [matDatepicker]="picker1" formControlName="itv">
+                            <mat-hint>DD/MM/YYYY</mat-hint>
+                            <mat-datepicker-toggle matSuffix [for]="picker1">
+                              <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                            <mat-error *ngIf="registroVehiculo.get('itv')?.invalid && (registroVehiculo.get('itv')?.dirty 
+                                || registroVehiculo.get('itv')?.touched)" required>
+                                Debe introducir la fecha de matriculación del vehículo
+                            </mat-error>
+                          </mat-form-field>  
+                          <button type="button" id="cliente" class="cliente clienteXL" (click)="seleccionaCliente()">
+                            <div class="text" *ngIf="(clientesService.currentClient$ | async) === null">
+                              <mat-icon id="icono">person</mat-icon>
+                              <span class="textoCliente">Seleccione el cliente vendedor</span>
+                            </div>
+                            <div class="text" *ngIf="(clientesService.currentClient$ | async) as Cliente">
+                              <p class="textoCliente">{{ Cliente.nombre + ' ' + Cliente.apellido1 }} </p>
+                              <p class="textoCliente"><strong class="textoCliente">NIF/CIF:</strong> {{ Cliente.documento }}</p>
+                            </div>
+                          </button>             
+                    </mat-card-content>
+             
+                </mat-card>
+            </div>
+            <div class="col-12 col-md-4">
+                <mat-card class="columna">
+                    <mat-card-content>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Fecha de compra</mat-label>
+                            <input matInput [matDatepicker]="picker2" formControlName="fechaCompra">
+                            <mat-hint>DD/MM/YYYY</mat-hint>
+                            <mat-datepicker-toggle matSuffix [for]="picker2">
+                              <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #picker2></mat-datepicker>
+                            <mat-error *ngIf="registroVehiculo.get('fechaCompra')?.invalid && (registroVehiculo.get('fechaCompra')?.dirty 
+                                || registroVehiculo.get('fechaCompra')?.touched)" required>
+                                Debe introducir la fecha de matriculación del vehículo
+                            </mat-error>
+                          </mat-form-field>               
+                    </mat-card-content>
+                    <mat-card-content>
+                        <mat-form-field>
+                            <mat-label>Precio de compra:</mat-label>
+                            <input matInput type="number" placeholder="0" min="0" name="precioCompra"
+                                formControlName="precioCompra">
+                            <mat-hint>Introduzca el precio de compra del vehículo</mat-hint>
+                            <span matSuffix>€</span>
+                            <mat-error *ngIf="registroVehiculo.get('precioCompra')?.invalid && (registroVehiculo.get('precioCompra')?.dirty 
+                                || registroVehiculo.get('precioCompra')?.touched)" required>
+                                Debe introducir el precio de compra del vehículo
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-card-content>
+                    <mat-card-content>
+                        <mat-form-field>
+                            <mat-label>Precio de venta:</mat-label>
+                            <input matInput type="number" placeholder="0" min="0" name="precioVenta"
+                                formControlName="precioVenta">
+                            <mat-hint>Introduzca el precio de venta del vehículo</mat-hint>
+                            <span matSuffix>€</span>
+                            <mat-error *ngIf="registroVehiculo.get('precioVenta')?.invalid && (registroVehiculo.get('precioVenta')?.dirty 
+                                || registroVehiculo.get('precioVenta')?.touched)" required>
+                                Debe introducir el precio de venta del vehículo
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-card-content>
+                    <mat-card-content>                 
+                            <mat-label>Gestión de venta: </mat-label>
+                            <mat-checkbox matTooltip="Marque esta casilla si una gestión de venta"  formControlName="gestionVenta" name="gestionVenta"></mat-checkbox>
+                            <!-- <mat-hint>Marque esta casilla si una gestión de venta</mat-hint> -->               
+                    </mat-card-content>               
+                </mat-card>
+            </div>
+    
+    
         </div>
-        <div fxFlex>
-            <mat-card class="columna">
-                <mat-card-content>
-                    <mat-form-field>
-                        <mat-label>Kilometraje:</mat-label>
-                        <input matInput type="number" placeholder="0" min="0" name="kilometraje"
-                            formControlName="kilometraje">
-                        <mat-hint>Introduzca el kilometraje del vehículo</mat-hint>
-                        <span matSuffix>Km</span>
-                        <mat-error *ngIf="registroVehiculo.get('kilometraje')?.invalid && (registroVehiculo.get('kilometraje')?.dirty 
-                            || registroVehiculo.get('kilometraje')?.touched)" required>
-                            Debe introducir el kilometraje del vehículo
-                        </mat-error>
-                    </mat-form-field>
-                </mat-card-content>
-                <mat-card-content>
-                    <mat-form-field appearance="fill">
-                        <mat-label>Fecha de matriculación</mat-label>
-                        <input matInput [matDatepicker]="picker" formControlName="matriculacion">
-                        <mat-hint>DD/MM/YYYY</mat-hint>
-                        <mat-datepicker-toggle matSuffix [for]="picker">
-                          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-                        </mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                        <mat-error *ngIf="registroVehiculo.get('matriculacion')?.invalid && (registroVehiculo.get('matriculacion')?.dirty 
-                            || registroVehiculo.get('matriculacion')?.touched)" required>
-                            Debe introducir la fecha de matriculación del vehículo
-                        </mat-error>
-                      </mat-form-field>               
-                </mat-card-content>
-                <mat-card-content>
-                    <mat-form-field appearance="fill">
-                        <mat-label>Fecha de la última ITV</mat-label>
-                        <input matInput [matDatepicker]="picker1" formControlName="itv">
-                        <mat-hint>DD/MM/YYYY</mat-hint>
-                        <mat-datepicker-toggle matSuffix [for]="picker1">
-                          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-                        </mat-datepicker-toggle>
-                        <mat-datepicker #picker1></mat-datepicker>
-                        <mat-error *ngIf="registroVehiculo.get('itv')?.invalid && (registroVehiculo.get('itv')?.dirty 
-                            || registroVehiculo.get('itv')?.touched)" required>
-                            Debe introducir la fecha de matriculación del vehículo
-                        </mat-error>
-                      </mat-form-field>               
-                </mat-card-content>
-                <button type="button" id="cliente" class="cliente clienteXL" (click)="seleccionaCliente()">
-                    <div class="text" *ngIf="(clientesService.currentClient$ | async) === null">
-                      <mat-icon id="icono">person</mat-icon>
-                      <span class="textoCliente">Seleccione el cliente vendedor</span>
-                    </div>
-                    <div class="text" *ngIf="(clientesService.currentClient$ | async) as Cliente">
-                      <p class="textoCliente">{{ Cliente.nombre + ' ' + Cliente.apellido1 }} </p>
-                      <p class="textoCliente"><strong class="textoCliente">NIF/CIF:</strong> {{ Cliente.documento }}</p>
-                    </div>
-                  </button>
-            </mat-card>
-        </div>
-        <div fxFlex class="columna">
-            <mat-card>
-                <mat-card-content>
-                    <mat-form-field appearance="fill">
-                        <mat-label>Fecha de compra</mat-label>
-                        <input matInput [matDatepicker]="picker2" formControlName="fechaCompra">
-                        <mat-hint>DD/MM/YYYY</mat-hint>
-                        <mat-datepicker-toggle matSuffix [for]="picker2">
-                          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-                        </mat-datepicker-toggle>
-                        <mat-datepicker #picker2></mat-datepicker>
-                        <mat-error *ngIf="registroVehiculo.get('fechaCompra')?.invalid && (registroVehiculo.get('fechaCompra')?.dirty 
-                            || registroVehiculo.get('fechaCompra')?.touched)" required>
-                            Debe introducir la fecha de matriculación del vehículo
-                        </mat-error>
-                      </mat-form-field>               
-                </mat-card-content>
-                <mat-card-content>
-                    <mat-form-field>
-                        <mat-label>Precio de compra:</mat-label>
-                        <input matInput type="number" placeholder="0" min="0" name="precioCompra"
-                            formControlName="precioCompra">
-                        <mat-hint>Introduzca el precio de compra del vehículo</mat-hint>
-                        <span matSuffix>€</span>
-                        <mat-error *ngIf="registroVehiculo.get('precioCompra')?.invalid && (registroVehiculo.get('precioCompra')?.dirty 
-                            || registroVehiculo.get('precioCompra')?.touched)" required>
-                            Debe introducir el precio de compra del vehículo
-                        </mat-error>
-                    </mat-form-field>
-                </mat-card-content>
-                <mat-card-content>
-                    <mat-form-field>
-                        <mat-label>Precio de venta:</mat-label>
-                        <input matInput type="number" placeholder="0" min="0" name="precioVenta"
-                            formControlName="precioVenta">
-                        <mat-hint>Introduzca el precio de venta del vehículo</mat-hint>
-                        <span matSuffix>€</span>
-                        <mat-error *ngIf="registroVehiculo.get('precioVenta')?.invalid && (registroVehiculo.get('precioVenta')?.dirty 
-                            || registroVehiculo.get('precioVenta')?.touched)" required>
-                            Debe introducir el precio de venta del vehículo
-                        </mat-error>
-                    </mat-form-field>
-                </mat-card-content>
-                <mat-card-content>
-                  
-                        <mat-label>Gestión de venta: </mat-label>
-                        <mat-checkbox matTooltip="Marque esta casilla si una gestión de venta"  formControlName="gestionVenta" name="gestionVenta"></mat-checkbox>
-                        <!-- <mat-hint>Marque esta casilla si una gestión de venta</mat-hint> -->
-                
-                </mat-card-content>
-            </mat-card>
-        </div>
+        <mat-card class="columna">
+            <mat-card-actions class="mat-card-button-login">
+                <button mat-raised-button type="submit" [disabled]="
+                registroVehiculo.get('matricula')?.invalid
+                || registroVehiculo.get('marca')?.invalid
+                || registroVehiculo.get('modelo')?.invalid
+                || registroVehiculo.get('bastidor')?.invalid
+                || registroVehiculo.get('matriculacion')?.invalid
+                || registroVehiculo.get('itv')?.invalid
+                || registroVehiculo.get('fechaCompra')?.invalid
+                "
+                    [ngClass]="boton">Enviar</button>
+            </mat-card-actions>
+        </mat-card>
+    </form>
+    
 
-
-    </div>
-    <mat-card class="columna">
-        <mat-card-actions class="mat-card-button-login">
-            <button mat-raised-button type="submit" [disabled]="registroVehiculo.get('matricula')?.invalid"
-                [ngClass]="boton">Enviar</button>
-        </mat-card-actions>
-    </mat-card>
-</form>

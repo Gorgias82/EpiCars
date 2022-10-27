@@ -2,7 +2,7 @@ import { GastoVehiculo } from "./gasto-vehiculo.model";
 
 export interface Vehiculo {
 
-    id : number,
+    id? : number,
     matricula : string,
     marca : string,
     modelo : string,
@@ -14,10 +14,10 @@ export interface Vehiculo {
     precioVenta : number,
     fechaCompra : Date,
     fechaVenta : Date,
-    imagen : string,
-    url_documentacion : string,
+    imagen? : string,
+    url_documentacion? : string,
     gestionVenta : boolean,
     vendedor_id : number,
-    comprador_id : number,
+    comprador_id? : number,
     gastos : GastoVehiculo[]
 }

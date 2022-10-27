@@ -38,7 +38,7 @@ export class ClientesRegisterComponent implements OnInit {
   ngOnInit(): void {
     console.log(localStorage.getItem("updatedCliente"));
     if(sessionStorage.getItem("updatedCliente")){
-      this.updatedCliente = JSON.parse(localStorage.getItem("updatedCliente"));
+      this.updatedCliente = JSON.parse(sessionStorage.getItem("updatedCliente"));
       this.isModificacion = true;
       this.titulo = "Modifica el cliente " + this.updatedCliente.nombre + " " + this.updatedCliente.apellido1;
       this.boton = "modify-submit";

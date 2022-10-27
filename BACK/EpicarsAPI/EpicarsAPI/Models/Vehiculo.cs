@@ -28,6 +28,7 @@ namespace EpicarsAPI.Models
         public Boolean gestionVenta { get; set; }
         public int? vendedor_id { get; set; }
         public int? comprador_id { get; set; }
+        public bool? vendido { get; set; }
         public virtual List<GastoVehiculo> gastos { get; set; }
 
 
