@@ -70,7 +70,7 @@
             </button>
             <button mat-button
                 matTooltip="Elimina el vehículo {{element.marca}} {{element.modelo}} con matrícula {{element.matricula}}"
-                matTooltipClass="delete-tooltip" (click)="deleteVehiculo(element.id)">
+                matTooltipClass="delete-tooltip" (click)="deleteVehiculo(element.id, element.marca + ' ' + element.modelo + ' con matrícula ' + element.matricula)">
                 <mat-icon>delete</mat-icon>
             </button>
         </td>

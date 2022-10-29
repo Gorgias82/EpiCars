@@ -33,7 +33,7 @@ export class ClientesService {
    
   }
 
-  getById(id : string){
+  getById(id : number){
     return this.http.get(this.baseUrl + this.path + '/findbyid?id=' +  id).pipe(
    map((response : Cliente) => {
      const client = response;

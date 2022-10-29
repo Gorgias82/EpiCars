@@ -19,6 +19,7 @@ export class VehiculosRegisterComponent implements OnInit {
   boton: string
   isModificacion: boolean = false
   updatedVehiculo: Vehiculo
+  updateId : number
   constructor(private fb: FormBuilder, public clientesService: ClientesService, private router: Router, private vehiculosService: VehiculoService) { }
 
   ngOnInit(): void {
@@ -50,10 +51,16 @@ export class VehiculosRegisterComponent implements OnInit {
   comprobarCliente() {
     if (sessionStorage.getItem("formVehiculo")) {
       this.updatedVehiculo = JSON.parse(sessionStorage.getItem('formVehiculo'))
-      console.log(this.updatedVehiculo.matriculacion)
       var matriculacion = this.updatedVehiculo.matriculacion == null ? null : this.updatedVehiculo.matriculacion
       var itv = this.updatedVehiculo.itv == null ? null : this.updatedVehiculo.itv
       var fechaCompra = this.updatedVehiculo.fechaCompra == null ? null : this.updatedVehiculo.fechaCompra
+      // if(sessionStorage.getItem('isUpdateVehiculo')){
+      //   var vendedor = this.updatedVehiculo.vendedor_id
+
+
+      // }else{
+      //   var vendedor = 0
+      // }
       this.registroVehiculo.setValue({
         matricula: this.updatedVehiculo.matricula,
         marca: this.updatedVehiculo.marca,
@@ -68,7 +75,7 @@ export class VehiculosRegisterComponent implements OnInit {
         gestionVenta: this.updatedVehiculo.gestionVenta,
         vendedor_id: 0
       })
-
+ 
       sessionStorage.removeItem("formVehiculo")
     }
 
@@ -98,6 +105,7 @@ export class VehiculosRegisterComponent implements OnInit {
   onSubmit(form: FormGroup) {
     this.clientesService.currentClient$.subscribe(response => {
       if (response) {
+        console.log(response)
         this.updatedVehiculo = {
           matricula: this.registroVehiculo.get('matricula')?.value as unknown as string,
           marca: this.registroVehiculo.get('marca')?.value as unknown as string,
@@ -115,15 +123,28 @@ export class VehiculosRegisterComponent implements OnInit {
           gastos: []
         }
         console.log(this.updatedVehiculo)
-        this.vehiculosService.insertVehiculo(this.updatedVehiculo).subscribe(response => {
-          if (response) {
+        if (sessionStorage.getItem("isUpdateVehiculo")) {
+          this.updatedVehiculo.id = sessionStorage.getItem("isUpdateVehiculo") as unknown as number
+          this.vehiculosService.updateVehiculo(this.updatedVehiculo).subscribe(response => {
             Swal.fire({
-              title: 'El cliente se ha introducido correctamente',
+              title: 'El vehículo se ha modificado correctamente',
               icon: 'success'
             })
+            sessionStorage.removeItem("isUpdateVehiculo")
             this.cargarFormulario();
-          }
-        })
+          })
+        } else {
+          this.vehiculosService.insertVehiculo(this.updatedVehiculo).subscribe(response => {
+            if (response) {
+              Swal.fire({
+                title: 'El vehículo se ha introducido correctamente',
+                icon: 'success'
+              })
+              this.cargarFormulario();
+            }
+          })
+        }
+
       }
     })
 

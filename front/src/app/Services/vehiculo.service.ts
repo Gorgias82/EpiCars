@@ -23,4 +23,12 @@ export class VehiculoService {
    insertVehiculo(vehiculo : Vehiculo) : Observable<any> {
     return this.http.post(this.baseUrl + this.path, vehiculo);
    }
+
+   updateVehiculo(vehiculo : Vehiculo) : Observable<any> {
+    return this.http.put(this.baseUrl + this.path, vehiculo)
+   }
+
+   deleteVehiculo(id : number) : Observable<any> {
+    return this.http.delete(this.baseUrl + this.path + "/" + id)
+   }
 }

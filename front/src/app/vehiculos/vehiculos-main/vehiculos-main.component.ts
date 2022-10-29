@@ -5,6 +5,8 @@ import {MatPaginator} from '@angular/material/paginator';
 import { Vehiculo } from 'src/app/Models/vehiculo.model';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
+import { ClientesService } from 'src/app/Services/clientes.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-vehiculos-main',
@@ -33,8 +35,8 @@ export class VehiculosMainComponent implements OnInit {
   columnsToDisplayWithExpand: string[] = [...this.columnsToDisplay, 'expand'];
   expandedElement: Vehiculo | null = null;
   columnsToDisplayGastos : string[] = ['descripcion','importe','fecha','metodoPago','iconos']
-
-  constructor(private vehiculosService : VehiculoService, private router : Router) { }
+  updatedVehiculo : Vehiculo
+  constructor(private vehiculosService : VehiculoService, private router : Router, private clientesService : ClientesService) { }
 
   ngOnInit(): void {
     this.cargarVehiculos();
@@ -89,11 +91,48 @@ export class VehiculosMainComponent implements OnInit {
     }
   }
 
-  deleteVehiculo(id : number) {
-    throw new Error('Method not implemented.');
-    }
+  deleteVehiculo(id : number, nombre : string){
+    Swal.fire({
+      title: "¿Esta seguro que quiere eliminar el vehículo " + nombre + "?",
+      text: "Sera eliminado permanentemente",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: "Si, eliminalo",
+      cancelButtonText: 'No, he cambiado de opinión'
+    }).then((result) => {
+      if(result.value){
+        console.log(id)
+        this.vehiculosService.deleteVehiculo(id).subscribe(response => {
+          if(response){
+            // this.toastr.success("El cliente se ha eliminado correctamente");
+            Swal.fire({
+              title : "El vehículo se ha eliminado correctamente",
+              icon : 'success'
+            })
+            this.cargarVehiculos();
+          }
+        })
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Operación cancelada',
+          'No se ha eliminado el registro'
+        )
+      }
+    })
+
+
+
+    
+
+  }
     updateVehiculo(id : number) {
-    throw new Error('Method not implemented.');
+      this.updatedVehiculo = this.dsVehiculos.find(function(v)  {return v.id == id})
+      sessionStorage.setItem("formVehiculo", JSON.stringify(this.updatedVehiculo));
+      this.clientesService.getById(this.updatedVehiculo.vendedor_id).subscribe(response =>{
+console.log(response)
+      })
+      sessionStorage.setItem("isUpdateVehiculo", this.updatedVehiculo.id as unknown as string)
+      this.router.navigateByUrl('vehiculos/registro')
     }
     addVehiculo() {
       this.router.navigateByUrl('vehiculos/registro')
