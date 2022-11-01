@@ -30,11 +30,28 @@ namespace EpicarsAPI.Data
                 .WithOne(g => g.vehiculo)
                 .HasForeignKey(v => v.id);
 
+            //modelBuilder.Entity<GastoVehiculo>()
+            //    .HasOne(g => g.metodoPago)
+            //    .WithMany(m => m.gastosVehiculo)
+            //    .HasForeignKey(g => g.metodoPago_id);
+
+            //modelBuilder.Entity<MetodoPago>()
+            //    .HasMany(m => m.gastosVehiculo)
+            //    .WithOne(g => g.metodoPago)
+            //    .HasForeignKey(m => m.id);
+
+            //modelBuilder.Entity<GastoVehiculo>(entity =>
+            //{
+            //    entity.HasKey(e => new { e.id, e.vehiculo_id });
+            //});
+
+
         }
 
         public DbSet<Cliente> Cliente { get; set; }
         public DbSet<Vehiculo> Vehiculo { get; set; }
         public DbSet<GastoVehiculo> GastoVehiculo { get; set; }
+        public DbSet<MetodoPago> MetodoPago { get; set; }
 
 
     }
