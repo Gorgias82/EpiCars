@@ -4,8 +4,9 @@ export interface GastoVehiculo {
     descripcion : string,
     importe : number,
     fecha : Date,
-    metodoPago : number,
+    metodoPago_Id : number,
     vehiculo_id : number,
+    metodoPago : string
 
 
 }
