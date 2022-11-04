@@ -26,13 +26,15 @@ import { VehiculosRegisterComponent } from './vehiculos-register/vehiculos-regis
 
 //Flexlayout
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { GastoVehiculoRegisterComponent } from './gasto-vehiculo-register/gasto-vehiculo-register.component';
 
 registerLocaleData(localeEs, 'es', localeEsExtra);
 
 @NgModule({
   declarations: [
     VehiculosMainComponent,
-    VehiculosRegisterComponent
+    VehiculosRegisterComponent,
+    GastoVehiculoRegisterComponent
   ],
   imports: [
     CommonModule,

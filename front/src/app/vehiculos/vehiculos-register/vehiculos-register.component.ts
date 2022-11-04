@@ -16,7 +16,7 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
 export class VehiculosRegisterComponent implements OnInit {
   registroVehiculo: FormGroup
   titulo: string = "Crea un vehículo"
-  boton: string
+  boton: string = "add-submit";
   isModificacion: boolean = false
   updatedVehiculo: Vehiculo
   updateId : number
@@ -51,6 +51,8 @@ export class VehiculosRegisterComponent implements OnInit {
   comprobarCliente() {
     if (sessionStorage.getItem("formVehiculo")) {
       this.updatedVehiculo = JSON.parse(sessionStorage.getItem('formVehiculo'))
+      this.titulo = "Modifica el vehículo " + this.updatedVehiculo.marca + " " + this.updatedVehiculo.modelo + " con matrícula " + this.updatedVehiculo.matricula
+      this.boton = "modify-submit"
       var matriculacion = this.updatedVehiculo.matriculacion == null ? null : this.updatedVehiculo.matriculacion
       var itv = this.updatedVehiculo.itv == null ? null : this.updatedVehiculo.itv
       var fechaCompra = this.updatedVehiculo.fechaCompra == null ? null : this.updatedVehiculo.fechaCompra
@@ -130,6 +132,8 @@ export class VehiculosRegisterComponent implements OnInit {
               title: 'El vehículo se ha modificado correctamente',
               icon: 'success'
             })
+            this.titulo = "Crear nuevo vehículo";
+            this.boton = "add-submit";
             sessionStorage.removeItem("isUpdateVehiculo")
             this.cargarFormulario();
           })

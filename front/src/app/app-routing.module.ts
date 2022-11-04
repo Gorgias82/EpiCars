@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ClientesListComponent } from './clientes/clientes-list/clientes-list.component';
 import { ClientesMainComponent } from './clientes/clientes-main/clientes-main.component';
 import { ClientesRegisterComponent } from './clientes/clientes-register/clientes-register.component';
+import { GastoVehiculoRegisterComponent } from './vehiculos/gasto-vehiculo-register/gasto-vehiculo-register.component';
 import { VehiculosMainComponent } from './vehiculos/vehiculos-main/vehiculos-main.component';
 import { VehiculosRegisterComponent } from './vehiculos/vehiculos-register/vehiculos-register.component';
 
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path : 'clientes/list', component:ClientesListComponent},
   { path : 'vehiculos', component:VehiculosMainComponent},
   { path : 'vehiculos/registro', component:VehiculosRegisterComponent}, 
+  { path : 'vehiculos/gastovehiculo/registro', component:GastoVehiculoRegisterComponent},
   { path: '**', redirectTo: ''}
 ];
 
