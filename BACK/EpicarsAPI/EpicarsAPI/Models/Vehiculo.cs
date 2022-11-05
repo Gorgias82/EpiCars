@@ -23,13 +23,14 @@ namespace EpicarsAPI.Models
         public decimal precioVenta { get; set; }
         public DateTime fechaCompra { get; set; }
         public DateTime fechaVenta { get; set; }
-        public string? imagen { get; set; }
-        public string? url_documentacion { get; set; }
+        public string imagen { get; set; }
+        public string url_documentacion { get; set; }
         public Boolean gestionVenta { get; set; }
         public int? vendedor_id { get; set; }
         public int? comprador_id { get; set; }
         public bool? vendido { get; set; }
         public virtual List<GastoVehiculo> gastos { get; set; }
+
 
 
 

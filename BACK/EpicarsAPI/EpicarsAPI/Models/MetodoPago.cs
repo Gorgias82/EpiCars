@@ -9,6 +9,8 @@ namespace EpicarsAPI.Models
 
         public string metodo { get; set; }
 
+
+
         //public GastoVehiculo[] gastosVehiculo { get; set; }
     }
 }

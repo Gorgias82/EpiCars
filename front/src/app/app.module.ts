@@ -39,8 +39,7 @@ registerLocaleData(localeEs, 'es', localeEsExtra);
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent
-
+    NavbarComponent,
 
   ],
   exports : [

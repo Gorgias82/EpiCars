@@ -46,20 +46,16 @@ namespace EpicarsAPI.Controllers
 
             if (vehiculo == null) return BadRequest(new { mensaje = "El gasto debe pertenecer a un vehículo" });
 
-            if(gastoVehiculo.metodoPago_Id <= 0) return BadRequest(new { mensaje = "Debe introducir el metodo de pago" });
-
-            string metodoPago = _context.MetodoPago.Where(v => v.id == gastoVehiculo.metodoPago_Id).Select(m => m.metodo).FirstOrDefault();
-
-            gastoVehiculo.metodoPago = metodoPago;
+            if(gastoVehiculo.metodoPago == null) return BadRequest(new { mensaje = "Debe introducir el metodo de pago" });
 
             List<GastoVehiculo> gastos = _context.GastoVehiculo.ToList();
 
-            int maxKey = 0;
-            if(gastos.Count > 0)
-            {
-                maxKey = _context.GastoVehiculo.Max(g => g.id);
-            }
-            gastoVehiculo.id = maxKey + 1;
+            //int maxKey = 0;
+            //if(gastos.Count > 0)
+            //{
+            //    maxKey = _context.GastoVehiculo.Max(g => g.id);
+            //}
+            //gastoVehiculo.id = maxKey + 1;
             _context.GastoVehiculo.Add(gastoVehiculo);
             var result = await _context.SaveChangesAsync();
 
@@ -90,7 +86,7 @@ namespace EpicarsAPI.Controllers
                 oldGastoVehiculo.descripcion = gastoVehiculo.descripcion;
             }
 
-            if (gastoVehiculo.metodoPago_Id > 0)
+            if (gastoVehiculo.metodoPago != null)
             {
                 oldGastoVehiculo.metodoPago = gastoVehiculo.metodoPago;
             }
@@ -108,7 +104,7 @@ namespace EpicarsAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> deleteGastoVehiculo(int id)
         {
-            if (id <= 0)
+            if (id < 0)
             {
                 return BadRequest(new { mensaje = "Debe introducir el identificador del gasto" });
             }

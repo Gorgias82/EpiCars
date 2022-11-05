@@ -1,1 +1,85 @@
-<p>gasto-vehiculo-register works!</p>
+<div class="container">
+    <form [formGroup]="registroGastoVehiculo" (ngSubmit)="onSubmit(registroGastoVehiculo)">
+        <div class="row">
+            <div id="main" class="col-12">
+                <h1> {{titulo}} </h1>
+                <mat-card >
+                    <mat-card-content>
+                        <mat-form-field>
+                            <mat-label>Gasto:</mat-label>
+                            <textarea matInput  class="card" placeholder="descripcion del gasto" name="descripcion" formControlName="descripcion">
+                                </textarea>
+                            <mat-hint>Introduzca el gasto del vehículo</mat-hint>
+                            <mat-error *ngIf="registroGastoVehiculo.get('descripcion')?.invalid && (registroGastoVehiculo.get('descripcion')?.dirty 
+                                || registroGastoVehiculo.get('descripcion')?.touched)" required>
+                                Debe introducir la descripción del gasto
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card>
+                    <mat-card-content>
+                        <mat-form-field>
+                            <mat-label>Importe del gasto:</mat-label>
+                            <input matInput type="number" placeholder="0" min="0" name="importe"
+                                formControlName="importe">
+                            <mat-hint>Introduzca el importe del gasto</mat-hint>
+                            <span matSuffix>€</span>
+                            <mat-error *ngIf="registroGastoVehiculo.get('importe')?.invalid && (registroGastoVehiculo.get('importe')?.dirty 
+                                || registroGastoVehiculo.get('importe')?.touched)" required>
+                                Debe introducir el importe del gasto
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card>
+                    <mat-card-content>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Fecha del gasto</mat-label>
+                            <input matInput [matDatepicker]="picker" formControlName="fecha">
+                            <mat-hint>DD/MM/YYYY</mat-hint>
+                            <mat-datepicker-toggle matSuffix [for]="picker">
+                              <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error *ngIf="registroGastoVehiculo.get('fecha')?.invalid && (registroGastoVehiculo.get('fecha')?.dirty 
+                                || registroGastoVehiculo.get('fecha')?.touched)" required>
+                                Debe introducir la fecha del gasto
+                            </mat-error>
+                          </mat-form-field> 
+                    </mat-card-content>
+                </mat-card>
+                <mat-card>
+                    <mat-card-content>
+                        <mat-form-field>
+                            <mat-label>Selecciona el método de pago</mat-label>
+                            <mat-select formControlName="metodoPago">
+                                <mat-option [value]="metodo.metodo" *ngFor="let metodo of metodosPago">{{metodo.metodo}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="registroGastoVehiculo.get('metodoPago')?.invalid && (registroGastoVehiculo.get('metodoPago')?.dirty 
+                                || registroGastoVehiculo.get('metodoPago')?.touched)" required>
+                                Debe introducir el método de pago
+                            </mat-error>
+                        </mat-form-field>
+                    </mat-card-content>
+
+                </mat-card>
+                <mat-card>
+                    <mat-card-actions class="mat-card-button-login">
+                        <button mat-raised-button type="submit" [disabled]="
+                        registroGastoVehiculo.get('descripcion')?.invalid
+                        || registroGastoVehiculo.get('importe')?.invalid
+                        || registroGastoVehiculo.get('metodoPago')?.invalid          
+                        || registroGastoVehiculo.get('fecha')?.invalid
+                        "
+                            [ngClass]="boton">Enviar</button>
+                    </mat-card-actions>
+                </mat-card>
+               
+         
+            </div>
+        </div>
+    </form>
+    
+</div>

@@ -27,11 +27,11 @@ namespace EpicarsAPI.Controllers
         public async Task<ActionResult<List<Vehiculo>>> GetVehiculos()
         {
             List<Vehiculo> vehiculos;
-                            
+            
             vehiculos = await _context.Vehiculo
                 .Include("gastos")
                 .ToListAsync();
-
+        
             return Ok(vehiculos);
         }
 

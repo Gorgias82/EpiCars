@@ -37,6 +37,7 @@ export class VehiculosMainComponent implements OnInit {
   expandedElement: Vehiculo | null = null;
   columnsToDisplayGastos: string[] = ['descripcion', 'importe', 'fecha', 'metodoPago', 'iconos']
   updatedVehiculo: Vehiculo
+  vehiculoGasto :  Vehiculo
   constructor(private vehiculosService: VehiculoService, private router: Router, private clientesService: ClientesService, private gastoVehiculoService: GastoVehiculoService) { }
 
   ngOnInit(): void {
@@ -166,10 +167,14 @@ export class VehiculosMainComponent implements OnInit {
     })
   }
 
-  updateGasto(id: number) {
+  updateGasto(id: number, idVehiculo : number) {
+    this.vehiculoGasto = this.dsVehiculos.find(function (v) { return v.id == idVehiculo })
+    sessionStorage.setItem("vehiculoGasto", JSON.stringify(this.vehiculoGasto));
     this.router.navigateByUrl('vehiculos/gastovehiculo/registro')
   }
-  addGasto() {
+  addGasto(idVehiculo : number) {
+    this.vehiculoGasto = this.dsVehiculos.find(function (v) { return v.id == idVehiculo })
+    sessionStorage.setItem("vehiculoGasto", JSON.stringify(this.vehiculoGasto));
     this.router.navigateByUrl('vehiculos/gastovehiculo/registro')
   }
 }

@@ -6,53 +6,53 @@
 <table mat-table [dataSource]="dataSource" *ngIf="cargado" multiTemplateDataRows class="mat-elevation-z8">
     <ng-container matColumnDef="matricula" class="columna">
         <th mat-header-cell *matHeaderCellDef class="columna"> Matrícula </th>
-        <td mat-cell *matCellDef="let element" class="columna"> {{element.matricula}} </td>
+        <td mat-cell *matCellDef="let vehiculo" class="columna"> {{vehiculo.matricula}} </td>
     </ng-container>
     <ng-container matColumnDef="marca">
         <th mat-header-cell *matHeaderCellDef class="columna"> Marca </th>
-        <td mat-cell *matCellDef="let element" class="columna"> {{element.marca}} </td>
+        <td mat-cell *matCellDef="let vehiculo" class="columna"> {{vehiculo.marca}} </td>
     </ng-container>
     <ng-container matColumnDef="modelo">
         <th mat-header-cell *matHeaderCellDef class="columna"> Modelo </th>
-        <td mat-cell *matCellDef="let element" class="columna"> {{element.modelo}} </td>
+        <td mat-cell *matCellDef="let vehiculo" class="columna"> {{vehiculo.modelo}} </td>
     </ng-container>
     <ng-container matColumnDef="bastidor">
         <th mat-header-cell *matHeaderCellDef class="columna"> Bastidor </th>
-        <td mat-cell *matCellDef="let element" class="columna"> {{element.bastidor}} </td>
+        <td mat-cell *matCellDef="let vehiculo" class="columna"> {{vehiculo.bastidor}} </td>
     </ng-container>
     <ng-container matColumnDef="kilometraje">
         <th mat-header-cell *matHeaderCellDef class="columna"> Kilometraje </th>
-        <td mat-cell *matCellDef="let element" class="columna"> {{element.kilometraje}} </td>
+        <td mat-cell *matCellDef="let vehiculo" class="columna"> {{vehiculo.kilometraje}} </td>
     </ng-container>
     <ng-container matColumnDef="matriculacion">
         <th mat-header-cell *matHeaderCellDef class="columna"> Fecha de matriculacion </th>
-        <td mat-cell *matCellDef="let element" class="columna"> {{element.matriculacion | date}} </td>
+        <td mat-cell *matCellDef="let vehiculo" class="columna"> {{vehiculo.matriculacion | date}} </td>
     </ng-container>
     <ng-container matColumnDef="itv">
         <th mat-header-cell *matHeaderCellDef class="columna"> Fecha de la última ITV </th>
-        <td mat-cell *matCellDef="let element" class="columna"> {{element.itv | date}} </td>
+        <td mat-cell *matCellDef="let vehiculo" class="columna"> {{vehiculo.itv | date}} </td>
     </ng-container>
     <ng-container matColumnDef="precioCompra">
         <th mat-header-cell *matHeaderCellDef class="columna"> Precio de compra </th>
-        <td mat-cell *matCellDef="let element" class="columna"> {{element.precioCompra}}€</td>
+        <td mat-cell *matCellDef="let vehiculo" class="columna"> {{vehiculo.precioCompra}}€</td>
     </ng-container>
     <ng-container matColumnDef="precioVenta">
         <th mat-header-cell *matHeaderCellDef class="columna"> Precio de venta </th>
-        <td mat-cell *matCellDef="let element" class="columna"> {{element.precioVenta}}€ </td>
+        <td mat-cell *matCellDef="let vehiculo" class="columna"> {{vehiculo.precioVenta}}€ </td>
     </ng-container>
     <ng-container matColumnDef="fechaCompra">
         <th mat-header-cell *matHeaderCellDef class="columna"> Fecha de compra </th>
-        <td mat-cell *matCellDef="let element" class="columna"> {{element.fechaCompra | date}} </td>
+        <td mat-cell *matCellDef="let vehiculo" class="columna"> {{vehiculo.fechaCompra | date}} </td>
     </ng-container>
     <ng-container matColumnDef="fechaVenta">
         <th mat-header-cell *matHeaderCellDef class="columna"> Fecha de venta </th>
-        <td mat-cell *matCellDef="let element" class="columna"> {{element.venta | date}} </td>
+        <td mat-cell *matCellDef="let vehiculo" class="columna"> {{vehiculo.venta | date}} </td>
     </ng-container>
     <ng-container matColumnDef="gestionVenta">
         <th mat-header-cell *matHeaderCellDef class="columna"> Gestión de venta </th>
-        <td mat-cell *matCellDef="let element" class="columna">
+        <td mat-cell *matCellDef="let vehiculo" class="columna">
             <mat-checkbox matTooltip="Gestión de venta" class="example-margin" [disabled]="true"
-                [checked]="element.gestionVenta == true? true : false">
+                [checked]="vehiculo.gestionVenta == true? true : false">
                 <!--  -->
             </mat-checkbox>
         </td>
@@ -63,45 +63,45 @@
                 matTooltipClass="add-tooltip" (click)="addVehiculo()">
                 <mat-icon>add_box</mat-icon>
             </button> </th>
-        <td mat-cell *matCellDef="let element">
+        <td mat-cell *matCellDef="let vehiculo">
             <button mat-button
-                matTooltip="Modifica el vehículo {{element.marca}} {{element.modelo}} con matrícula {{element.matricula}} "
-                matTooltipClass="modify-tooltip" (click)="updateVehiculo(element.id)">
+                matTooltip="Modifica el vehículo {{vehiculo.marca}} {{vehiculo.modelo}} con matrícula {{vehiculo.matricula}} "
+                matTooltipClass="modify-tooltip" (click)="updateVehiculo(vehiculo.id)">
                 <mat-icon>create</mat-icon>
             </button>
             <button mat-button
-                matTooltip="Elimina el vehículo {{element.marca}} {{element.modelo}} con matrícula {{element.matricula}}"
+                matTooltip="Elimina el vehículo {{vehiculo.marca}} {{vehiculo.modelo}} con matrícula {{vehiculo.matricula}}"
                 matTooltipClass="delete-tooltip"
-                (click)="deleteVehiculo(element.id, element.marca + ' ' + element.modelo + ' con matrícula ' + element.matricula)">
+                (click)="deleteVehiculo(vehiculo.id, vehiculo.marca + ' ' + vehiculo.modelo + ' con matrícula ' + vehiculo.matricula)">
                 <mat-icon>delete</mat-icon>
             </button>
         </td>
     </ng-container>
     <ng-container matColumnDef="expand">
         <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
-        <td mat-cell *matCellDef="let element">
+        <td mat-cell *matCellDef="let vehiculo">
             <button mat-icon-button aria-label="expand row"
-                (click)="expandedElement = expandedElement === element ? null : element; desplegarDetalles($event); $event.stopPropagation()">
+                (click)="expandedElement = expandedElement === vehiculo ? null : vehiculo; desplegarDetalles($event); $event.stopPropagation()">
                 <!-- ; desplegarDetalles($event); $event.stopPropagation() -->
-                <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
-                <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                <mat-icon *ngIf="expandedElement !== vehiculo">keyboard_arrow_down</mat-icon>
+                <mat-icon *ngIf="expandedElement === vehiculo">keyboard_arrow_up</mat-icon>
             </button>
         </td>
     </ng-container>
 
     <!-- El dropdown es otra table con los gastos del vehiculo -->
     <ng-container matColumnDef="expandedDetail">
-        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
-            <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+        <td mat-cell *matCellDef="let vehiculo" [attr.colspan]="columnsToDisplayWithExpand.length">
+            <div class="example-element-detail" [@detailExpand]="vehiculo == expandedElement ? 'expanded' : 'collapsed'">
                 <!-- [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'" -->
-                <table mat-table [dataSource]="element.gastos" class="table-detalles mat-elevation-z8">
+                <table mat-table [dataSource]="vehiculo.gastos" class="table-detalles mat-elevation-z8">
                     <ng-container matColumnDef="descripcion">
                         <th mat-header-cell *matHeaderCellDef> Gasto </th>
                         <td mat-cell *matCellDef="let gasto"> {{gasto.descripcion}} </td>
                     </ng-container>
                     <ng-container matColumnDef="importe">
                         <th mat-header-cell *matHeaderCellDef> Importe </th>
-                        <td mat-cell *matCellDef="let gasto"> {{gasto.importe}} </td>
+                        <td mat-cell *matCellDef="let gasto"> {{gasto.importe}}€ </td>
                     </ng-container>
                     <ng-container matColumnDef="fecha">
                         <th mat-header-cell *matHeaderCellDef> Fecha </th>
@@ -113,17 +113,17 @@
                     </ng-container>
                     <!-- Columna iconos -->
                     <ng-container matColumnDef="iconos">
-                        <th mat-header-cell *matHeaderCellDef> <button mat-button matTooltip="Añade un gasto al vehículo {{element.marca}} {{element.modelo}} con matrícula {{element.matricula}}"
-                                matTooltipClass="add-tooltip" (click)="addGasto()">
+                        <th mat-header-cell *matHeaderCellDef> <button mat-button matTooltip="Añade un gasto al vehículo {{vehiculo.marca}} {{vehiculo.modelo}} con matrícula {{vehiculo.matricula}}"
+                                matTooltipClass="add-tooltip" (click)="addGasto(vehiculo.id)">
                                 <mat-icon>add_box</mat-icon>
                             </button> </th>
-                        <td mat-cell *matCellDef="let element">
-                            <button mat-button matTooltip="Modifica el gasto {{element.descripcion}} "
-                                matTooltipClass="modify-tooltip" (click)="updateGasto(element.id)">
+                        <td mat-cell *matCellDef="let gasto">
+                            <button mat-button matTooltip="Modifica el gasto {{vehiculo.descripcion}} "
+                                matTooltipClass="modify-tooltip" (click)="updateGasto(gasto.id,vehiculo.id)">
                                 <mat-icon>create</mat-icon>
                             </button>
-                            <button mat-button matTooltip="Elimina el gasto {{element.descripcion}} "
-                                matTooltipClass="delete-tooltip" (click)="deleteGasto(element.id, element.descripcion)">
+                            <button mat-button matTooltip="Elimina el gasto {{vehiculo.descripcion}} "
+                                matTooltipClass="delete-tooltip" (click)="deleteGasto(gasto.id, vehiculo.descripcion)">
                                 <mat-icon>delete</mat-icon>
                             </button>
                         </td>

@@ -14,6 +14,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatCheckboxModule} from '@angular/material/checkbox'; 
 import {MatDatepickerModule} from '@angular/material/datepicker'; 
 import {MatNativeDateModule} from '@angular/material/core';
+import {MatSelectModule} from '@angular/material/select'; 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
 import { DatePipe } from '@angular/common';
@@ -52,6 +53,7 @@ registerLocaleData(localeEs, 'es', localeEsExtra);
     FormsModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
+    MatSelectModule,
     DatePipe,
     BrowserModule,
     BrowserAnimationsModule,
