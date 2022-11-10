@@ -22,7 +22,10 @@
     background: rgb(70, 160, 181);
     font-size: medium;
   }
-
+  ::ng-deep .mat-datepicker-content .mat-calendar{
+    width: 100%;
+    height: 100%;
+  }
   /* Clases table angular */
   table {
     width: 100%;

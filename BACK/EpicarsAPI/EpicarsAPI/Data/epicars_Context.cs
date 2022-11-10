@@ -40,10 +40,10 @@ namespace EpicarsAPI.Data
             //    .WithOne(g => g.metodoPago)
             //    .HasForeignKey(m => m.id);
 
-            modelBuilder.Entity<GastoVehiculo>(entity =>
-            {
-                entity.HasKey(e => new { e.id, e.vehiculo_id });
-            });
+            //modelBuilder.Entity<GastoVehiculo>(entity =>
+            //{
+            //    entity.HasKey(e => new { e.id, e.vehiculo_id });
+            //});
 
 
         }

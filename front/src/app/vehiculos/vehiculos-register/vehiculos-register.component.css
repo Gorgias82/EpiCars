@@ -136,3 +136,17 @@ mat-card{
     background: rgb(70, 160, 181);
     font-size: medium;
   }
+
+  .fechas{
+    margin: 20px auto;
+  }
+  /*  .mat-calendar*/
+  /* ::ng-deep .mat-datepicker-content {
+    width: 100% !important;
+    height: 100% !important;
+  } */
+/* 
+  ::ng-deep .mat-calendar-table{
+    background-color: purple;
+
+  } */

@@ -32,23 +32,7 @@
                         </mat-form-field>
                     </mat-card-content>
                 </mat-card>
-                <mat-card>
-                    <mat-card-content>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Fecha del gasto</mat-label>
-                            <input matInput [matDatepicker]="picker" formControlName="fecha">
-                            <mat-hint>DD/MM/YYYY</mat-hint>
-                            <mat-datepicker-toggle matSuffix [for]="picker">
-                              <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-                            </mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
-                            <mat-error *ngIf="registroGastoVehiculo.get('fecha')?.invalid && (registroGastoVehiculo.get('fecha')?.dirty 
-                                || registroGastoVehiculo.get('fecha')?.touched)" required>
-                                Debe introducir la fecha del gasto
-                            </mat-error>
-                          </mat-form-field> 
-                    </mat-card-content>
-                </mat-card>
+             
                 <mat-card>
                     <mat-card-content>
                         <mat-form-field>
@@ -65,6 +49,22 @@
                     </mat-card-content>
 
                 </mat-card>
+                <div class="fechas">
+                    <mat-form-field appearance="fill" >
+                        <mat-label>Fecha del gasto</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="fecha">
+                        <mat-hint>DD/MM/YYYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="picker">
+                          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #picker startView="year"></mat-datepicker>
+                        <mat-error *ngIf="registroGastoVehiculo.get('fecha')?.invalid && (registroGastoVehiculo.get('fecha')?.dirty 
+                            || registroGastoVehiculo.get('fecha')?.touched)" required>
+                            Debe introducir la fecha del gasto
+                        </mat-error>
+                      </mat-form-field> 
+                </div>
+ 
                 <mat-card>
                     <mat-card-actions class="mat-card-button-login">
                         <button mat-raised-button type="submit" [disabled]="

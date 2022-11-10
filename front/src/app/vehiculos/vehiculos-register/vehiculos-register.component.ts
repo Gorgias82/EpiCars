@@ -1,8 +1,7 @@
-import { ThisReceiver } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { async } from 'rxjs';
+import { MatDatepicker } from '@angular/material/datepicker';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Vehiculo } from 'src/app/Models/vehiculo.model';
 import { ClientesService } from 'src/app/Services/clientes.service';
 import { VehiculoService } from 'src/app/Services/vehiculo.service';
@@ -20,14 +19,19 @@ export class VehiculosRegisterComponent implements OnInit {
   isModificacion: boolean = false
   updatedVehiculo: Vehiculo
   updateId : number
-  constructor(private fb: FormBuilder, public clientesService: ClientesService, private router: Router, private vehiculosService: VehiculoService) { }
+  constructor(private fb: FormBuilder, public clientesService: ClientesService, private router: Router, private vehiculosService: VehiculoService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+ console.log(this.route)
+ console.log(location.origin)
+  }
+
+
+  ngAfterContentInit (){
     this.cargarFormulario()
   }
 
   cargarFormulario() {
-
     this.registroVehiculo = this.fb.group({
       matricula: ['', Validators.compose([Validators.required])],
       marca: ['', Validators.compose([Validators.required])],
@@ -77,10 +81,9 @@ export class VehiculosRegisterComponent implements OnInit {
         gestionVenta: this.updatedVehiculo.gestionVenta,
         vendedor_id: 0
       })
- 
-      sessionStorage.removeItem("formVehiculo")
-    }
 
+    }
+    sessionStorage.removeItem("formVehiculo")
   }
 
   seleccionaCliente() {
@@ -135,6 +138,7 @@ export class VehiculosRegisterComponent implements OnInit {
             this.titulo = "Crear nuevo vehículo";
             this.boton = "add-submit";
             sessionStorage.removeItem("isUpdateVehiculo")
+
             this.cargarFormulario();
           })
         } else {

@@ -4,10 +4,11 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Vehiculo } from 'src/app/Models/vehiculo.model';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Router } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { ClientesService } from 'src/app/Services/clientes.service';
 import Swal from 'sweetalert2';
 import { GastoVehiculoService } from 'src/app/Services/gasto-vehiculo.service';
+import { VehiculosRegisterComponent } from '../vehiculos-register/vehiculos-register.component';
 
 @Component({
   selector: 'app-vehiculos-main',
@@ -38,7 +39,7 @@ export class VehiculosMainComponent implements OnInit {
   columnsToDisplayGastos: string[] = ['descripcion', 'importe', 'fecha', 'metodoPago', 'iconos']
   updatedVehiculo: Vehiculo
   vehiculoGasto :  Vehiculo
-  constructor(private vehiculosService: VehiculoService, private router: Router, private clientesService: ClientesService, private gastoVehiculoService: GastoVehiculoService) { }
+  constructor(private vehiculosService: VehiculoService, private router: Router, private clientesService: ClientesService, private gastoVehiculoService: GastoVehiculoService,private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.cargarVehiculos();
@@ -103,7 +104,6 @@ export class VehiculosMainComponent implements OnInit {
       cancelButtonText: 'No, he cambiado de opinión'
     }).then((result) => {
       if (result.value) {
-        console.log(id)
         this.vehiculosService.deleteVehiculo(id).subscribe(response => {
           if (response) {
             // this.toastr.success("El cliente se ha eliminado correctamente");
@@ -130,11 +130,18 @@ export class VehiculosMainComponent implements OnInit {
       console.log(response)
     })
     sessionStorage.setItem("isUpdateVehiculo", this.updatedVehiculo.id as unknown as string)
-    this.router.navigateByUrl('vehiculos/registro')
+    this.router.navigateByUrl('vehiculos/registro').then(response => {if(response){
+      // location.reload()
+
+      // 
+
+     }});
   }
 
   addVehiculo() {
-    this.router.navigateByUrl('vehiculos/registro')
+    // this.router.navigateByUrl('vehiculos/registro')
+     this.router.navigate(['registro'], { relativeTo : this.route}).then(response => {if(response){ }});
+    
   }
 
   deleteGasto(id: number, nombre: string) {
@@ -147,7 +154,6 @@ export class VehiculosMainComponent implements OnInit {
       cancelButtonText: 'No, he cambiado de opinión'
     }).then((result) => {
       if (result.value) {
-        console.log(id)
         this.gastoVehiculoService.deleteGastoVehiculo(id).subscribe(response => {
           if (response) {
             // this.toastr.success("El cliente se ha eliminado correctamente");
@@ -169,7 +175,9 @@ export class VehiculosMainComponent implements OnInit {
 
   updateGasto(id: number, idVehiculo : number) {
     this.vehiculoGasto = this.dsVehiculos.find(function (v) { return v.id == idVehiculo })
+    var updatedGasto = this.vehiculoGasto.gastos.find(function (g) { return g.id == id })
     sessionStorage.setItem("vehiculoGasto", JSON.stringify(this.vehiculoGasto));
+    sessionStorage.setItem("updatedGastoVehiculo", JSON.stringify(updatedGasto));
     this.router.navigateByUrl('vehiculos/gastovehiculo/registro')
   }
   addGasto(idVehiculo : number) {
