@@ -19,5 +19,6 @@ export interface Vehiculo {
     gestionVenta : boolean,
     vendedor_id : number,
     comprador_id? : number,
-    gastos : GastoVehiculo[]
+    gastos : GastoVehiculo[],
+    vendido? : boolean
 }

@@ -83,7 +83,7 @@ export class VehiculosRegisterComponent implements OnInit {
       })
 
     }
-    sessionStorage.removeItem("formVehiculo")
+    // sessionStorage.removeItem("formVehiculo")
   }
 
   seleccionaCliente() {
@@ -125,7 +125,8 @@ export class VehiculosRegisterComponent implements OnInit {
           fechaVenta: this.registroVehiculo.get('fechaVenta')?.value as unknown as Date,
           gestionVenta: this.registroVehiculo.get('gestionVenta').value as unknown as boolean,
           vendedor_id: response.id as unknown as number,
-          gastos: []
+          gastos: [],
+
         }
         console.log(this.updatedVehiculo)
         if (sessionStorage.getItem("isUpdateVehiculo")) {
@@ -137,6 +138,7 @@ export class VehiculosRegisterComponent implements OnInit {
             })
             this.titulo = "Crear nuevo vehículo";
             this.boton = "add-submit";
+            sessionStorage.removeItem("formVehiculo")
             sessionStorage.removeItem("isUpdateVehiculo")
 
             this.cargarFormulario();
@@ -156,7 +158,9 @@ export class VehiculosRegisterComponent implements OnInit {
       }
     })
 
+  }
 
-
+  ngOnDestroy(){
+    sessionStorage.removeItem("formVehiculo")
   }
 }

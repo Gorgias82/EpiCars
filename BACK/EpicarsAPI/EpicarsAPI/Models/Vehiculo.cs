@@ -22,7 +22,7 @@ namespace EpicarsAPI.Models
         public decimal precioCompra { get; set; }
         public decimal precioVenta { get; set; }
         public DateTime fechaCompra { get; set; }
-        public DateTime fechaVenta { get; set; }
+        public DateTime? fechaVenta { get; set; }
         public string imagen { get; set; }
         public string url_documentacion { get; set; }
         public Boolean gestionVenta { get; set; }

@@ -51,7 +51,7 @@ export class ClientesRegisterComponent implements OnInit {
         direccion: this.updatedCliente.direccion,
         email : [this.updatedCliente.email, Validators.email] 
       });
-      sessionStorage.removeItem("updatedCliente")
+      // sessionStorage.removeItem("updatedCliente")
     }
     
   }
@@ -84,6 +84,7 @@ export class ClientesRegisterComponent implements OnInit {
           this.isModificacion = false;
           this.titulo = "Crear nuevo cliente";
           this.boton = "add-submit";
+          sessionStorage.removeItem("updatedCliente")
           this.creaFormulario();
         }
       })
@@ -102,6 +103,10 @@ export class ClientesRegisterComponent implements OnInit {
       });
     }
 
+  }
+
+  ngOnDestroy(){
+    sessionStorage.removeItem("updatedCliente")
   }
 
 }

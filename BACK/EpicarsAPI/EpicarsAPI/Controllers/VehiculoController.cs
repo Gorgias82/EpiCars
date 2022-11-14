@@ -75,7 +75,7 @@ namespace EpicarsAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> updateVehiculo(Vehiculo vehiculo)
+        public async Task<ActionResult> updateVehiculo([FromBody] Vehiculo vehiculo)
         {
             if (vehiculo == null) return BadRequest(new { mensaje = "Debe introducir un vehículo" });
 

@@ -52,6 +52,7 @@ namespace EpicarsAPI.Data
         public DbSet<Vehiculo> Vehiculo { get; set; }
         public DbSet<GastoVehiculo> GastoVehiculo { get; set; }
         public DbSet<MetodoPago> MetodoPago { get; set; }
+        public DbSet<Venta> Venta { get; set; }
 
 
     }

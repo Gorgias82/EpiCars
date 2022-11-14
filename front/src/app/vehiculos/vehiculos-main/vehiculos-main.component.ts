@@ -9,6 +9,7 @@ import { ClientesService } from 'src/app/Services/clientes.service';
 import Swal from 'sweetalert2';
 import { GastoVehiculoService } from 'src/app/Services/gasto-vehiculo.service';
 import { VehiculosRegisterComponent } from '../vehiculos-register/vehiculos-register.component';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-vehiculos-main',
@@ -33,26 +34,37 @@ export class VehiculosMainComponent implements OnInit {
   dsVehiculos: Vehiculo[]
   dataSource: MatTableDataSource<Vehiculo>
   columnsToDisplay: string[] = ['matricula', 'marca', 'modelo', 'bastidor', 'kilometraje',
-    'matriculacion', 'itv', 'precioCompra', 'precioVenta', 'fechaCompra', 'fechaVenta', 'gestionVenta', 'iconos']
+    'matriculacion', 'itv', 'precioCompra', 'precioVenta', 'fechaCompra', 'fechaVenta', 'gestionVenta','vendido', 'iconos']
   columnsToDisplayWithExpand: string[] = [...this.columnsToDisplay, 'expand'];
   expandedElement: Vehiculo | null = null;
   columnsToDisplayGastos: string[] = ['descripcion', 'importe', 'fecha', 'metodoPago', 'iconos']
   updatedVehiculo: Vehiculo
   vehiculoGasto :  Vehiculo
-  constructor(private vehiculosService: VehiculoService, private router: Router, private clientesService: ClientesService, private gastoVehiculoService: GastoVehiculoService,private route: ActivatedRoute) { }
+  opcionesVisualizacion = this.fb.group({
+    mostrarVendidos : false
+  }) 
+  constructor(private fb : FormBuilder, private vehiculosService: VehiculoService, private router: Router, private clientesService: ClientesService, private gastoVehiculoService: GastoVehiculoService,private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.cargarVehiculos();
+
     if (this.dataSource !== undefined) {
       this.dataSource.paginator = this.paginator;
     }
   }
 
+  mostrarVendidos(){
+    console.log(this.opcionesVisualizacion.get('mostrarVendidos'))
+  }
+
   cargarVehiculos() {
     this.vehiculosService.getVehiculos().subscribe(response => {
       if (response) {
-        console.log(response);
-        this.dsVehiculos = response;
+        console.log(this.opcionesVisualizacion.get('mostrarVendidos').value);
+        this.dsVehiculos = response
+        if(this.opcionesVisualizacion.get('mostrarVendidos').value == false){         
+          this.dsVehiculos = this.dsVehiculos.filter(v => v.vendido == undefined || v.vendido == null || v.vendido == false)
+        }
         this.dataSource = new MatTableDataSource<Vehiculo>(this.dsVehiculos)
         this.dataSource.paginator = this.paginator
         this.cargado = true;
@@ -95,47 +107,63 @@ export class VehiculosMainComponent implements OnInit {
   }
 
   deleteVehiculo(id: number, nombre: string) {
-    Swal.fire({
-      title: "¿Esta seguro que quiere eliminar el vehículo " + nombre + "?",
-      text: "Sera eliminado permanentemente",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: "Si, eliminalo",
-      cancelButtonText: 'No, he cambiado de opinión'
-    }).then((result) => {
-      if (result.value) {
-        this.vehiculosService.deleteVehiculo(id).subscribe(response => {
-          if (response) {
-            // this.toastr.success("El cliente se ha eliminado correctamente");
-            Swal.fire({
-              title: "El vehículo se ha eliminado correctamente",
-              icon: 'success'
-            })
-            this.cargarVehiculos();
-          }
-        })
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire(
-          'Operación cancelada',
-          'No se ha eliminado el registro'
-        )
-      }
+    if(this.updatedVehiculo.vendido){
+      Swal.fire({
+        title : 'No se puede eliminar un vehiculo vendido',
+        icon : 'error'
     })
-
+    }else{
+      Swal.fire({
+        title: "¿Esta seguro que quiere eliminar el vehículo " + nombre + "?",
+        text: "Sera eliminado permanentemente",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: "Si, eliminalo",
+        cancelButtonText: 'No, he cambiado de opinión'
+      }).then((result) => {
+        if (result.value) {
+          this.vehiculosService.deleteVehiculo(id).subscribe(response => {
+            if (response) {
+              // this.toastr.success("El cliente se ha eliminado correctamente");
+              Swal.fire({
+                title: "El vehículo se ha eliminado correctamente",
+                icon: 'success'
+              })
+              this.cargarVehiculos();
+            }
+          })
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire(
+            'Operación cancelada',
+            'No se ha eliminado el registro'
+          )
+        }
+      })
+  
+    }
+    
   }
   updateVehiculo(id: number) {
     this.updatedVehiculo = this.dsVehiculos.find(function (v) { return v.id == id })
-    sessionStorage.setItem("formVehiculo", JSON.stringify(this.updatedVehiculo));
-    this.clientesService.getById(this.updatedVehiculo.vendedor_id).subscribe(response => {
-      console.log(response)
+    if(this.updatedVehiculo.vendido){
+      Swal.fire({
+        title : 'No se puede modificar un vehiculo vendido',
+        icon : 'error'
     })
-    sessionStorage.setItem("isUpdateVehiculo", this.updatedVehiculo.id as unknown as string)
-    this.router.navigateByUrl('vehiculos/registro').then(response => {if(response){
-      // location.reload()
+    }else{
+      sessionStorage.setItem("formVehiculo", JSON.stringify(this.updatedVehiculo));
+      this.clientesService.getById(this.updatedVehiculo.vendedor_id).subscribe(response => {
+        console.log(response)
+      })
+      sessionStorage.setItem("isUpdateVehiculo", this.updatedVehiculo.id as unknown as string)
+      this.router.navigateByUrl('vehiculos/registro').then(response => {if(response){
+        // location.reload()
+  
+        // 
+  
+       }});
+    }
 
-      // 
-
-     }});
   }
 
   addVehiculo() {
@@ -144,45 +172,88 @@ export class VehiculosMainComponent implements OnInit {
     
   }
 
-  deleteGasto(id: number, nombre: string) {
-    Swal.fire({
-      title: "¿Esta seguro que quiere eliminar el gasto " + nombre + "?",
-      text: "Sera eliminado permanentemente",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: "Si, eliminalo",
-      cancelButtonText: 'No, he cambiado de opinión'
-    }).then((result) => {
-      if (result.value) {
-        this.gastoVehiculoService.deleteGastoVehiculo(id).subscribe(response => {
-          if (response) {
-            // this.toastr.success("El cliente se ha eliminado correctamente");
-            Swal.fire({
-              title: "El gasto se ha eliminado correctamente",
-              icon: 'success'
-            })
-            this.cargarVehiculos();
-          }
-        })
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire(
-          'Operación cancelada',
-          'No se ha eliminado el registro'
-        )
-      }
-    })
+  deleteGasto(id: number, nombre: string, idVehiculo : number) {
+    this.updatedVehiculo = this.dsVehiculos.find(function (v) { return v.id == idVehiculo })
+    if(this.updatedVehiculo.vendido){
+        Swal.fire({
+          title : 'No se puede eliminar un gasto de un vehículo vendido',
+          icon : 'error'
+      })
+    }else{
+      Swal.fire({
+        title: "¿Esta seguro que quiere eliminar el gasto " + nombre + "?",
+        text: "Sera eliminado permanentemente",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: "Si, eliminalo",
+        cancelButtonText: 'No, he cambiado de opinión'
+      }).then((result) => {
+        if (result.value) {
+          this.gastoVehiculoService.deleteGastoVehiculo(id).subscribe(response => {
+            if (response) {
+              // this.toastr.success("El cliente se ha eliminado correctamente");
+              Swal.fire({
+                title: "El gasto se ha eliminado correctamente",
+                icon: 'success'
+              })
+              this.cargarVehiculos();
+            }
+          })
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire(
+            'Operación cancelada',
+            'No se ha eliminado el registro'
+          )
+        }
+      })
+    }
+   
   }
 
   updateGasto(id: number, idVehiculo : number) {
     this.vehiculoGasto = this.dsVehiculos.find(function (v) { return v.id == idVehiculo })
-    var updatedGasto = this.vehiculoGasto.gastos.find(function (g) { return g.id == id })
-    sessionStorage.setItem("vehiculoGasto", JSON.stringify(this.vehiculoGasto));
-    sessionStorage.setItem("updatedGastoVehiculo", JSON.stringify(updatedGasto));
-    this.router.navigateByUrl('vehiculos/gastovehiculo/registro')
+    if(this.vehiculoGasto.vendido){
+      Swal.fire({
+        title : 'No se pueden modificar un gasto de un vehículo vendido',
+        icon : 'error'
+    })
+    }else{
+      var updatedGasto = this.vehiculoGasto.gastos.find(function (g) { return g.id == id })
+      sessionStorage.setItem("vehiculoGasto", JSON.stringify(this.vehiculoGasto));
+      sessionStorage.setItem("updatedGastoVehiculo", JSON.stringify(updatedGasto));
+      this.router.navigateByUrl('vehiculos/gastovehiculo/registro')
+    }
+
   }
   addGasto(idVehiculo : number) {
     this.vehiculoGasto = this.dsVehiculos.find(function (v) { return v.id == idVehiculo })
-    sessionStorage.setItem("vehiculoGasto", JSON.stringify(this.vehiculoGasto));
-    this.router.navigateByUrl('vehiculos/gastovehiculo/registro')
+    if(this.vehiculoGasto.vendido){
+      Swal.fire({
+        title : 'No se pueden añadir gastos a un vehículo vendido',
+        icon : 'error'
+    })
+    }else{
+      sessionStorage.setItem("vehiculoGasto", JSON.stringify(this.vehiculoGasto));
+      this.router.navigateByUrl('vehiculos/gastovehiculo/registro')
+    }
+
+  }
+
+  sellVehiculo(idVehiculo : number){
+    this.updatedVehiculo = this.dsVehiculos.find(function (v) { return v.id == idVehiculo })
+    if(this.updatedVehiculo.vendido){
+      Swal.fire({
+        title : 'No se puede vender un vehiculo que ya esta vendido',
+        icon : 'error'
+    })
+    }else{
+      sessionStorage.setItem("formVehiculo", JSON.stringify(this.updatedVehiculo));
+      this.clientesService.getById(this.updatedVehiculo.vendedor_id).subscribe(response => {
+        console.log(response)
+      })
+      sessionStorage.setItem("isUpdateVehiculo", this.updatedVehiculo.id as unknown as string)
+      this.router.navigateByUrl('vehiculos/registro')
+
+      }
   }
 }
