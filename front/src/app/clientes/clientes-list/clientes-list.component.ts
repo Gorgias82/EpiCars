@@ -70,13 +70,36 @@ export class ClientesListComponent implements OnInit {
   }
   //iniciar sesión
   onClickCliente(id){
+    console.log(id)
     this.ClientesService.getById(id).subscribe(response => {
+   
+  
     });
-
+    if(sessionStorage.getItem('formVehiculo')){
+      console.log("prueba vehiculos registro")
+      this.router.navigateByUrl('vehiculos/registro')
+    }else if (sessionStorage.getItem('formVenta')){
+      this.router.navigateByUrl('ventas/registro')
+    }
   }
 
   cerrarSesion(){
     this.ClientesService.logout();
+    if(sessionStorage.getItem('formVehiculo')){
+      console.log("prueba vehiculos registro")
+      this.router.navigateByUrl('vehiculos/registro')
+    }else if (sessionStorage.getItem('formVenta')){
+      this.router.navigateByUrl('ventas/registro')
+    }
+  }
+
+  volver(){
+    if(sessionStorage.getItem('formVehiculo')){
+      console.log("prueba vehiculos registro")
+      this.router.navigateByUrl('vehiculos/registro')
+    }else if (sessionStorage.getItem('formVenta')){
+      this.router.navigateByUrl('ventas/registro')
+    }
   }
 
   quitarTildes(texto : string){

@@ -24,6 +24,7 @@ export class VehiculosRegisterComponent implements OnInit {
   ngOnInit(): void {
  console.log(this.route)
  console.log(location.origin)
+
   }
 
 
@@ -60,13 +61,6 @@ export class VehiculosRegisterComponent implements OnInit {
       var matriculacion = this.updatedVehiculo.matriculacion == null ? null : this.updatedVehiculo.matriculacion
       var itv = this.updatedVehiculo.itv == null ? null : this.updatedVehiculo.itv
       var fechaCompra = this.updatedVehiculo.fechaCompra == null ? null : this.updatedVehiculo.fechaCompra
-      // if(sessionStorage.getItem('isUpdateVehiculo')){
-      //   var vendedor = this.updatedVehiculo.vendedor_id
-
-
-      // }else{
-      //   var vendedor = 0
-      // }
       this.registroVehiculo.setValue({
         matricula: this.updatedVehiculo.matricula,
         marca: this.updatedVehiculo.marca,
@@ -81,7 +75,12 @@ export class VehiculosRegisterComponent implements OnInit {
         gestionVenta: this.updatedVehiculo.gestionVenta,
         vendedor_id: 0
       })
-
+      if(this.updatedVehiculo.vendedor_id > 0){
+        this.clientesService.getById(this.updatedVehiculo.vendedor_id).subscribe(response => {
+                console.log(response)
+              })
+      }
+      
     }
     // sessionStorage.removeItem("formVehiculo")
   }
@@ -109,8 +108,8 @@ export class VehiculosRegisterComponent implements OnInit {
 
   onSubmit(form: FormGroup) {
     this.clientesService.currentClient$.subscribe(response => {
+      console.log(response)
       if (response) {
-        console.log(response)
         this.updatedVehiculo = {
           matricula: this.registroVehiculo.get('matricula')?.value as unknown as string,
           marca: this.registroVehiculo.get('marca')?.value as unknown as string,
@@ -156,11 +155,14 @@ export class VehiculosRegisterComponent implements OnInit {
         }
 
       }
+
     })
 
   }
 
   ngOnDestroy(){
-    sessionStorage.removeItem("formVehiculo")
+
+    // sessionStorage.removeItem("formVehiculo")  
+    // this.clientesService.logout()
   }
 }

@@ -6,6 +6,7 @@ import { ClientesRegisterComponent } from './clientes/clientes-register/clientes
 import { GastoVehiculoRegisterComponent } from './vehiculos/gasto-vehiculo-register/gasto-vehiculo-register.component';
 import { VehiculosMainComponent } from './vehiculos/vehiculos-main/vehiculos-main.component';
 import { VehiculosRegisterComponent } from './vehiculos/vehiculos-register/vehiculos-register.component';
+import { VentasRegisterComponent } from './ventas/ventas-register/ventas-register.component';
 
 const routes: Routes = [
   { path : 'clientes', component:ClientesMainComponent},
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path : 'vehiculos', component:VehiculosMainComponent},
   { path : 'vehiculos/registro', component:VehiculosRegisterComponent}, 
   { path : 'vehiculos/gastovehiculo/registro', component:GastoVehiculoRegisterComponent},
+  { path : 'ventas/registro', component: VentasRegisterComponent},
   { path: '**', redirectTo: ''}
 ];
 

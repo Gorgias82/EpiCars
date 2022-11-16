@@ -57,7 +57,7 @@
                         <mat-datepicker-toggle matSuffix [for]="picker">
                           <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                         </mat-datepicker-toggle>
-                        <mat-datepicker #picker startView="year"></mat-datepicker>
+                        <mat-datepicker touchUi #picker startView="month"></mat-datepicker>
                         <mat-error *ngIf="registroGastoVehiculo.get('fecha')?.invalid && (registroGastoVehiculo.get('fecha')?.dirty 
                             || registroGastoVehiculo.get('fecha')?.touched)" required>
                             Debe introducir la fecha del gasto

@@ -5,13 +5,13 @@
         </div>
         <div class="col-6">
             <div class="cabecera">
-                <div id="cerrarSesion" class="cerrar" (click)="cerrarSesion()" routerLink="/vehiculos/registro"
+                <div id="cerrarSesion" class="cerrar" (click)="cerrarSesion()" 
                     routerLinkActive="active">
                     <mat-icon>clear</mat-icon>
                     Cerrar Sesión
                 </div>
         
-                <div class="volver" routerLink="/vehiculos/registro" routerLinkActive="active">
+                <div class="volver" (click)="volver()" >
                     <mat-icon>undo</mat-icon>
                     Volver
                 </div>
@@ -32,7 +32,7 @@
             <!-- CLIENTES -->
             <div class="clientes-box scroll" *ngIf="cargado">
                 <div *ngFor="let cliente of clientes | searchFilter: searchTerm; index as i" id="c{{cliente.id}}"
-                    (click)="onClickCliente(cliente.id)" routerLink="/vehiculos/registro" class="cliente">
+                    (click)="onClickCliente(cliente.id)" class="cliente">
                     <div class="img-text">
                         <!-- <img src="{{cliente.img}}" alt="{{cliente.nombre}}"> -->
                         <div class="text">

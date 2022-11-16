@@ -123,7 +123,7 @@
                     <mat-datepicker-toggle matSuffix [for]="picker2">
                         <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                     </mat-datepicker-toggle>
-                    <mat-datepicker #picker2 startView="year" ></mat-datepicker>
+                    <mat-datepicker touchUi #picker2 startView="month" ></mat-datepicker>
                     <mat-error *ngIf="registroVehiculo.get('fechaCompra')?.invalid && (registroVehiculo.get('fechaCompra')?.dirty 
                                     || registroVehiculo.get('fechaCompra')?.touched)" required>
                         Debe introducir la fecha de matriculación del vehículo
@@ -138,7 +138,7 @@
                     <mat-datepicker-toggle matSuffix [for]="picker">
                         <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                     </mat-datepicker-toggle>
-                    <mat-datepicker #picker startView="year" ></mat-datepicker>
+                    <mat-datepicker touchUi #picker startView="month" ></mat-datepicker>
                     <mat-error *ngIf="registroVehiculo.get('matriculacion')?.invalid && (registroVehiculo.get('matriculacion')?.dirty 
                 || registroVehiculo.get('matriculacion')?.touched)" required>
                         Debe introducir la fecha de matriculación del vehículo
@@ -154,7 +154,7 @@
                     <mat-datepicker-toggle matSuffix [for]="picker1">
                         <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                     </mat-datepicker-toggle>
-                    <mat-datepicker #picker1 startView="year" ></mat-datepicker>
+                    <mat-datepicker touchUi #picker1 startView="month" ></mat-datepicker>
                     <mat-error *ngIf="registroVehiculo.get('itv')?.invalid && (registroVehiculo.get('itv')?.dirty 
             || registroVehiculo.get('itv')?.touched)" required>
                         Debe introducir la fecha de matriculación del vehículo
@@ -174,6 +174,7 @@
                 || registroVehiculo.get('matriculacion')?.invalid
                 || registroVehiculo.get('itv')?.invalid
                 || registroVehiculo.get('fechaCompra')?.invalid
+                || (clientesService.currentClient$ | async) === null
                 " [ngClass]="boton">Enviar</button>
         </mat-card-actions>
     </mat-card>

@@ -1,14 +1,4 @@
-::ng-deep .add-submit {
-    background: green;
-    font-size: medium;
-  }
-
-  ::ng-deep .modify-submit{
-    background: rgb(70, 160, 181);
-    font-size: medium;
-  }
-
-  #main{
+#main{
 
     text-align: center;
     margin: 30px auto;

@@ -34,16 +34,16 @@ export class VehiculosMainComponent implements OnInit {
   dsVehiculos: Vehiculo[]
   dataSource: MatTableDataSource<Vehiculo>
   columnsToDisplay: string[] = ['matricula', 'marca', 'modelo', 'bastidor', 'kilometraje',
-    'matriculacion', 'itv', 'precioCompra', 'precioVenta', 'fechaCompra', 'fechaVenta', 'gestionVenta','vendido', 'iconos']
+    'matriculacion', 'itv', 'precioCompra', 'precioVenta', 'fechaCompra', 'fechaVenta', 'gestionVenta', 'vendido', 'iconos']
   columnsToDisplayWithExpand: string[] = [...this.columnsToDisplay, 'expand'];
   expandedElement: Vehiculo | null = null;
   columnsToDisplayGastos: string[] = ['descripcion', 'importe', 'fecha', 'metodoPago', 'iconos']
   updatedVehiculo: Vehiculo
-  vehiculoGasto :  Vehiculo
+  vehiculoGasto: Vehiculo
   opcionesVisualizacion = this.fb.group({
-    mostrarVendidos : false
-  }) 
-  constructor(private fb : FormBuilder, private vehiculosService: VehiculoService, private router: Router, private clientesService: ClientesService, private gastoVehiculoService: GastoVehiculoService,private route: ActivatedRoute) { }
+    mostrarVendidos: false
+  })
+  constructor(private fb: FormBuilder, private vehiculosService: VehiculoService, private router: Router, private clientesService: ClientesService, private gastoVehiculoService: GastoVehiculoService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.cargarVehiculos();
@@ -53,7 +53,7 @@ export class VehiculosMainComponent implements OnInit {
     }
   }
 
-  mostrarVendidos(){
+  mostrarVendidos() {
     console.log(this.opcionesVisualizacion.get('mostrarVendidos'))
   }
 
@@ -62,7 +62,7 @@ export class VehiculosMainComponent implements OnInit {
       if (response) {
         console.log(this.opcionesVisualizacion.get('mostrarVendidos').value);
         this.dsVehiculos = response
-        if(this.opcionesVisualizacion.get('mostrarVendidos').value == false){         
+        if (this.opcionesVisualizacion.get('mostrarVendidos').value == false) {
           this.dsVehiculos = this.dsVehiculos.filter(v => v.vendido == undefined || v.vendido == null || v.vendido == false)
         }
         this.dataSource = new MatTableDataSource<Vehiculo>(this.dsVehiculos)
@@ -83,7 +83,7 @@ export class VehiculosMainComponent implements OnInit {
     let display = 'none';
     if (e.target.nodeName === 'TD') {
       display = e.target.parentNode.nextSibling.style.display
-    } else  if (e.target.parentNode.parentNode.parentNode.parentNode.nextSibling.style !== undefined){
+    } else if (e.target.parentNode.parentNode.parentNode.parentNode.nextSibling.style !== undefined) {
       display = e.target.parentNode.parentNode.parentNode.parentNode.nextSibling.style.display;
     }
 
@@ -107,12 +107,12 @@ export class VehiculosMainComponent implements OnInit {
   }
 
   deleteVehiculo(id: number, nombre: string) {
-    if(this.updatedVehiculo.vendido){
+    if (this.updatedVehiculo.vendido) {
       Swal.fire({
-        title : 'No se puede eliminar un vehiculo vendido',
-        icon : 'error'
-    })
-    }else{
+        title: 'No se puede eliminar un vehiculo vendido',
+        icon: 'error'
+      })
+    } else {
       Swal.fire({
         title: "¿Esta seguro que quiere eliminar el vehículo " + nombre + "?",
         text: "Sera eliminado permanentemente",
@@ -139,47 +139,54 @@ export class VehiculosMainComponent implements OnInit {
           )
         }
       })
-  
+
     }
-    
+
   }
   updateVehiculo(id: number) {
     this.updatedVehiculo = this.dsVehiculos.find(function (v) { return v.id == id })
-    if(this.updatedVehiculo.vendido){
+    if (this.updatedVehiculo.vendido) {
       Swal.fire({
-        title : 'No se puede modificar un vehiculo vendido',
-        icon : 'error'
-    })
-    }else{
+        title: 'No se puede modificar un vehiculo vendido',
+        icon: 'error'
+      })
+    } else {
       sessionStorage.setItem("formVehiculo", JSON.stringify(this.updatedVehiculo));
       this.clientesService.getById(this.updatedVehiculo.vendedor_id).subscribe(response => {
         console.log(response)
       })
       sessionStorage.setItem("isUpdateVehiculo", this.updatedVehiculo.id as unknown as string)
-      this.router.navigateByUrl('vehiculos/registro').then(response => {if(response){
-        // location.reload()
-  
-        // 
-  
-       }});
+      this.router.navigateByUrl('vehiculos/registro').then(response => {
+        if (response) {
+          // location.reload()
+
+          // 
+
+        }
+      });
     }
 
   }
 
   addVehiculo() {
     // this.router.navigateByUrl('vehiculos/registro')
-     this.router.navigate(['registro'], { relativeTo : this.route}).then(response => {if(response){ }});
-    
+    this.router.navigate(['registro'], { relativeTo: this.route }).then(response => { 
+      if (response) {
+         sessionStorage.removeItem("formVehiculo")
+         this.clientesService.logout()
+         } 
+    });
+
   }
 
-  deleteGasto(id: number, nombre: string, idVehiculo : number) {
+  deleteGasto(id: number, nombre: string, idVehiculo: number) {
     this.updatedVehiculo = this.dsVehiculos.find(function (v) { return v.id == idVehiculo })
-    if(this.updatedVehiculo.vendido){
-        Swal.fire({
-          title : 'No se puede eliminar un gasto de un vehículo vendido',
-          icon : 'error'
+    if (this.updatedVehiculo.vendido) {
+      Swal.fire({
+        title: 'No se puede eliminar un gasto de un vehículo vendido',
+        icon: 'error'
       })
-    }else{
+    } else {
       Swal.fire({
         title: "¿Esta seguro que quiere eliminar el gasto " + nombre + "?",
         text: "Sera eliminado permanentemente",
@@ -207,17 +214,17 @@ export class VehiculosMainComponent implements OnInit {
         }
       })
     }
-   
+
   }
 
-  updateGasto(id: number, idVehiculo : number) {
+  updateGasto(id: number, idVehiculo: number) {
     this.vehiculoGasto = this.dsVehiculos.find(function (v) { return v.id == idVehiculo })
-    if(this.vehiculoGasto.vendido){
+    if (this.vehiculoGasto.vendido) {
       Swal.fire({
-        title : 'No se pueden modificar un gasto de un vehículo vendido',
-        icon : 'error'
-    })
-    }else{
+        title: 'No se pueden modificar un gasto de un vehículo vendido',
+        icon: 'error'
+      })
+    } else {
       var updatedGasto = this.vehiculoGasto.gastos.find(function (g) { return g.id == id })
       sessionStorage.setItem("vehiculoGasto", JSON.stringify(this.vehiculoGasto));
       sessionStorage.setItem("updatedGastoVehiculo", JSON.stringify(updatedGasto));
@@ -225,35 +232,35 @@ export class VehiculosMainComponent implements OnInit {
     }
 
   }
-  addGasto(idVehiculo : number) {
+  addGasto(idVehiculo: number) {
     this.vehiculoGasto = this.dsVehiculos.find(function (v) { return v.id == idVehiculo })
-    if(this.vehiculoGasto.vendido){
+    if (this.vehiculoGasto.vendido) {
       Swal.fire({
-        title : 'No se pueden añadir gastos a un vehículo vendido',
-        icon : 'error'
-    })
-    }else{
+        title: 'No se pueden añadir gastos a un vehículo vendido',
+        icon: 'error'
+      })
+    } else {
       sessionStorage.setItem("vehiculoGasto", JSON.stringify(this.vehiculoGasto));
       this.router.navigateByUrl('vehiculos/gastovehiculo/registro')
     }
 
   }
 
-  sellVehiculo(idVehiculo : number){
+  sellVehiculo(idVehiculo: number) {
     this.updatedVehiculo = this.dsVehiculos.find(function (v) { return v.id == idVehiculo })
-    if(this.updatedVehiculo.vendido){
+    if (this.updatedVehiculo.vendido) {
       Swal.fire({
-        title : 'No se puede vender un vehiculo que ya esta vendido',
-        icon : 'error'
-    })
-    }else{
-      sessionStorage.setItem("formVehiculo", JSON.stringify(this.updatedVehiculo));
-      this.clientesService.getById(this.updatedVehiculo.vendedor_id).subscribe(response => {
-        console.log(response)
+        title: 'No se puede vender un vehiculo que ya esta vendido',
+        icon: 'error'
       })
-      sessionStorage.setItem("isUpdateVehiculo", this.updatedVehiculo.id as unknown as string)
-      this.router.navigateByUrl('vehiculos/registro')
-
-      }
+    } else {
+      sessionStorage.setItem("VehiculoVenta", JSON.stringify(this.updatedVehiculo));
+      this.router.navigateByUrl('ventas/registro').then(response => {
+        if (response) {
+          sessionStorage.removeItem('formVenta')
+          this.clientesService.logout()
+        }
+      })
+    }
   }
 }

@@ -33,6 +33,7 @@ import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import localeEsExtra from '@angular/common/locales/extra/es';
 import { VehiculosModule } from './vehiculos/vehiculos.module';
+import { VentasModule } from './ventas/ventas.module';
 
 registerLocaleData(localeEs, 'es', localeEsExtra);
 
@@ -48,6 +49,7 @@ registerLocaleData(localeEs, 'es', localeEsExtra);
   imports: [
     ClientesModule,
     VehiculosModule,
+    VentasModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

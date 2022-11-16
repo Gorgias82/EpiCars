@@ -1,0 +1,89 @@
+<div id="main">
+    <h1> {{titulo}} </h1>
+    <form [formGroup]="registroVenta" (ngSubmit)="onSubmit(registroVenta)">
+        <mat-card >
+            <mat-card-content>
+                <mat-form-field>
+                    <mat-label>Importe:</mat-label>
+                    <input matInput type="number" placeholder="0" min="0" name="importe"
+                            formControlName="importe">
+                        <mat-hint>Introduzca el precio de venta del vehículo</mat-hint>
+                        <span matSuffix>€</span>
+                    <mat-error
+                        *ngIf="registroVenta.get('importe')?.invalid && (registroVenta.get('importe')?.dirty || registroVenta.get('importe')?.touched)"
+                        required>
+                        Debe introducir el precio de venta del vehículo
+                    </mat-error>
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-content>
+                <mat-form-field>
+                    <mat-label>Selecciona el método de pago</mat-label>
+                    <mat-select formControlName="metodoPago">
+                        <mat-option [value]="metodo.metodo" *ngFor="let metodo of metodosPago">{{metodo.metodo}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="registroVenta.get('metodoPago')?.invalid && (registroVenta.get('metodoPago')?.dirty 
+                        || registroVenta.get('metodoPago')?.touched)" required>
+                        Debe introducir el método de pago
+                    </mat-error>
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-content>
+                <mat-form-field>
+                    <mat-label>Importe de la garantía:</mat-label>
+                    <input matInput type="number" placeholder="0" min="0" name="importe"
+                            formControlName="garantia">
+                        <mat-hint>Introduzca el importe de la garantía</mat-hint>
+                        <span matSuffix>€</span>
+                    <mat-error
+                        *ngIf="registroVenta.get('garantia')?.invalid && (registroVenta.get('garantia')?.dirty || registroVenta.get('garantia')?.touched)"
+                        required>
+                        Debe introducir el importe de la garantía
+                    </mat-error>
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-content>
+                <mat-label>Vehículo financiado: </mat-label>
+                <mat-checkbox matTooltip="Marque esta casilla si el vehículo tiene financiación"
+                    formControlName="esFinanciado" name="esFinanciado" (change)="setFinanciado()"></mat-checkbox>            
+            </mat-card-content>
+            <mat-card-content *ngIf="esFinanciado">
+                <mat-form-field>
+                    <mat-label>Importe de la financiación:</mat-label>
+                    <input matInput type="number" placeholder="0" min="0" name="importeFinanciado"
+                            formControlName="importeFinanciado">
+                        <mat-hint>Introduzca el importe de la financiación</mat-hint>
+                        <span matSuffix>€</span>
+                    <mat-error
+                        *ngIf="registroVenta.get('importeFinanciado')?.invalid && (registroVenta.get('importeFinanciado')?.dirty || registroVenta.get('importeFinanciado')?.touched)"
+                        required>
+                        Debe introducir el importe de la financiación
+                    </mat-error>
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-content>
+                <button type="button" id="cliente" class="cliente clienteXL" (click)="seleccionaCliente()">
+                    <div class="text" *ngIf="(clientesService.currentClient$ | async) === null">
+                        <mat-icon id="icono">person</mat-icon>
+                        <span class="textoCliente">Seleccione el cliente comprador</span>
+                    </div>
+                    <div class="text" *ngIf="(clientesService.currentClient$ | async) as Cliente">
+                        <p class="textoCliente">{{"Comprador: " + Cliente.nombre + ' ' + Cliente.apellido1 }} </p>
+                        <p class="textoCliente"><strong class="textoCliente">NIF/CIF:</strong> {{ Cliente.documento
+                            }}</p>
+                    </div>
+                </button>
+            </mat-card-content>        
+            <mat-card-actions class="mat-card-button-login">
+                <button mat-raised-button type="submit" [disabled]="registroVenta.get('importe')?.invalid 
+                            || registroVenta.get('metodoPago')?.invalid
+                            || registroVenta.get('garantia')?.invalid 
+                            || registroVenta.get('importeFinanciado')?.invalid
+                            || (clientesService.currentClient$ | async) === null
+                            " >Enviar</button>
+            </mat-card-actions>
+        </mat-card>
+
+    </form>
+</div>
