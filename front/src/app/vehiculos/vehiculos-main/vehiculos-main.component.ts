@@ -172,7 +172,7 @@ export class VehiculosMainComponent implements OnInit {
     // this.router.navigateByUrl('vehiculos/registro')
     this.router.navigate(['registro'], { relativeTo: this.route }).then(response => { 
       if (response) {
-         sessionStorage.removeItem("formVehiculo")
+         sessionStorage.removeItem("formVenta")
          this.clientesService.logout()
          } 
     });
@@ -257,7 +257,7 @@ export class VehiculosMainComponent implements OnInit {
       sessionStorage.setItem("VehiculoVenta", JSON.stringify(this.updatedVehiculo));
       this.router.navigateByUrl('ventas/registro').then(response => {
         if (response) {
-          sessionStorage.removeItem('formVenta')
+          sessionStorage.removeItem('formVehiculo')
           this.clientesService.logout()
         }
       })

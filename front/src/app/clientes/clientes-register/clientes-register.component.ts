@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { stringToKeyValue } from '@angular/flex-layout/extended/style/style-transforms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Cliente } from 'src/app/Models/cliente.model';
 import { ClientesService } from 'src/app/Services/clientes.service';
 import Swal from 'sweetalert2/dist/sweetalert2.js';  
+import { ClientesListComponent } from '../clientes-list/clientes-list.component';
 
 @Component({
   selector: 'app-clientes-register',
@@ -13,6 +14,7 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
   styleUrls: ['./clientes-register.component.css']
 })
 export class ClientesRegisterComponent implements OnInit {
+  // @Input() lista : ClientesListComponent
   registroCliente: FormGroup;
   cliente : Cliente;
   updatedCliente : Cliente;
@@ -96,6 +98,7 @@ export class ClientesRegisterComponent implements OnInit {
             title : 'El cliente se ha introducido correctamente',
             icon : 'success'
           })
+          
           this.creaFormulario();
      
           // this.router.navigateByUrl('clientes')

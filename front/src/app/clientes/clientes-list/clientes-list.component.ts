@@ -1,3 +1,4 @@
+import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
@@ -20,6 +21,7 @@ export class ClientesListComponent implements OnInit {
   constructor(public ClientesService : ClientesService, public router : Router) { }
 
   ngOnInit(): void {
+    this.onClickPaginator();
   }
 
   ngAfterViewInit() {
@@ -55,10 +57,14 @@ export class ClientesListComponent implements OnInit {
         
   }
   onClickPaginator(){
- 
-    this.ClientesService.getAll(this.paginator.pageIndex,this.paginator.pageSize).subscribe(x => {
+    var pageIndex = 0;
+    var pageSize = 5;
+    if(this.paginator !== undefined){
+      pageIndex = this.paginator.pageIndex;
+      pageSize = this.paginator.pageSize
+    }
+    this.ClientesService.getAll(pageIndex,pageSize).subscribe(x => {
       this.clientes = x; 
-      console.log(this.clientes);
       for(let cliente of this.clientes){
         cliente.documento = cliente.documento === null ? '': cliente.documento;
       }

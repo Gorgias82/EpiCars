@@ -63,7 +63,7 @@ namespace EpicarsAPI.Controllers
                 {
                     vehiculo.vendido = true;
                     vehiculo.precioVenta = venta.importe;
-                    vehiculo.fechaVenta = DateTime.Now;
+                    vehiculo.fechaVenta = DateTime.Today;
                     vehiculo.comprador_id = venta.comprador_id;
                     _context.SaveChanges();
                 }
