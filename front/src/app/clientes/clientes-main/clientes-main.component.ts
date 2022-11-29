@@ -32,7 +32,7 @@ export class ClientesMainComponent implements OnInit {
   }
 
   cargarClientes(){
-    this.clientesService.getClientes().subscribe(response => {
+    this.clientesService.getAll().subscribe(response => {
       console.log(response)
       if(response){
         this.dsClientes = response;

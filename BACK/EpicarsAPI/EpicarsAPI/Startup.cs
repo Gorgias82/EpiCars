@@ -1,4 +1,5 @@
 using EpicarsAPI.Data;
+using EpicarsAPI.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -59,6 +60,9 @@ namespace EpicarsAPI
                   options => {
                       options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                   });
+
+            //esta interface y servicio sustituye a los repositorios
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

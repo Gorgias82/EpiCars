@@ -17,13 +17,13 @@ export class ClientesService {
     this.baseUrl = environment.url_api;
    }
 
-   getClientes() : Observable<any> {
-    return this.http.get(this.baseUrl + this.path);
+  //  getClientes() : Observable<any> {
+  //   return this.http.get(this.baseUrl + this.path);
     
-   }
+  //  }
 
    getAll(pageIndex? : number, pageSize? : number): Observable<any> {
-    var query = this.baseUrl + this.path + '/list';
+    var query = this.baseUrl + this.path;
     if(pageIndex !== undefined && pageSize !== undefined){
       query = query + "?pageIndex=" + pageIndex + "&pageSize=" + pageSize;
       console.log(query);

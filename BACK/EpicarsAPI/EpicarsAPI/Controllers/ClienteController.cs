@@ -1,4 +1,5 @@
 ﻿using EpicarsAPI.Data;
+using EpicarsAPI.Interfaces;
 using EpicarsAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,48 +16,20 @@ namespace EpicarsAPI.Controllers
     public class ClienteController : ControllerBase
     {
 
-        private readonly epicars_Context _context;
+        private readonly IUnitOfWork _uow;
 
-        public ClienteController(epicars_Context context)
+        public ClienteController(IUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
 
         }
-
-        [HttpGet]
-        public async Task<ActionResult<List<Cliente>>> GetClientes()
-        {
-            List<Cliente> clientes;
-
-            clientes = await _context.Cliente.ToListAsync();
-
-            return Ok(clientes);
-        }
-
-
-        [Route("List")]
+        
         [HttpGet]
         public async Task<ActionResult<List<Cliente>>> GetClientesList([FromQuery] int pageIndex, int pageSize)
         {
-            List<Cliente> clientes;
-            if (pageIndex >= 0 && pageSize > 0)
-            {
-                int comienzo = pageIndex * pageSize;
-                clientes = await _context.Cliente
-                    .OrderBy(c => c.apellido1)
-                    .Skip(comienzo)
-                    .Take(pageSize)
-                    .ToListAsync();
-            }
-            else
-            {
-                clientes = await _context.Cliente
-                  .OrderBy(c => c.apellido1)
-                  .ToListAsync();
+            
 
-            }
-
-            return Ok(clientes);
+            return Ok( await _uow.ClientesRepository.GetClientesAsync(pageIndex, pageSize));
 
 
         }
@@ -67,9 +40,7 @@ namespace EpicarsAPI.Controllers
         {
             if (id <= 0) return BadRequest(new { mensaje = "Debe seleccionar un cliente" });
 
-            var cliente = await _context.Cliente
-                            .Where(c => c.id == id)
-                            .SingleOrDefaultAsync();
+            var cliente = await _uow.ClientesRepository.GetById(id);
 
             if (cliente == null) return BadRequest(new { mensaje = "No existe el cliente seleccionado" });
 
@@ -101,22 +72,22 @@ namespace EpicarsAPI.Controllers
                 return BadRequest(new { mensaje = "Debe introducir el documento(DNI o NIE) del cliente" });
             }
 
-            var existeDocumento = _context.Cliente.Where(c => c.documento.ToUpper() == cliente.documento.ToUpper()).SingleOrDefault();
+            var existeDocumento = _uow.ClientesRepository.ExisteDocumento(cliente);
 
-            if( existeDocumento != null)
+            if( existeDocumento)
             {
                 return BadRequest(new { mensaje = "Ya existe un cliente con ese dni o nie" });
             }
 
-            var existeTelefono = _context.Cliente.Where(c => c.telefono.ToUpper() == cliente.telefono.ToUpper()).SingleOrDefault();
+            var existeTelefono = _uow.ClientesRepository.ExisteTelefono(cliente);
 
-            if (existeTelefono != null)
+            if (existeTelefono)
             {
                 return BadRequest(new { mensaje = "Ya existe un cliente con ese telefono" });
             }
 
-            var existeEmail = _context.Cliente.Where(c => c.email.ToUpper() == cliente.email.ToUpper()).SingleOrDefault();
-
+            var existeEmail = _uow.ClientesRepository.ExisteEmail(cliente);
+    
             if (existeEmail != null && existeEmail.email.Length > 0)
             {
                 return BadRequest(new { mensaje = "Ya existe un cliente con ese email" });
@@ -127,8 +98,8 @@ namespace EpicarsAPI.Controllers
             }
 
 
-            _context.Cliente.Add(cliente);
-            var result = await _context.SaveChangesAsync();
+            _uow.ClientesRepository.InsertCliente(cliente);
+            var result = await _uow.Complete();
 
             if( result <= 0)
             {
@@ -146,7 +117,7 @@ namespace EpicarsAPI.Controllers
                 return BadRequest(new { mensaje = "Debe introducir un cliente" });
             }
 
-            Cliente oldCliente = _context.Cliente.Where(c => c.id == cliente.id).SingleOrDefault();
+            Cliente oldCliente = await _uow.ClientesRepository.GetById(cliente.id);
 
             if (oldCliente == null)
             {
@@ -166,9 +137,9 @@ namespace EpicarsAPI.Controllers
             }
             if (cliente.documento != null && cliente.documento.Length >= 0)
             {
-                var existeDocumento = _context.Cliente.Where(c => c.documento.ToUpper() == cliente.documento.ToUpper()).SingleOrDefault();
+                var existeDocumento = _uow.ClientesRepository.ExisteDocumento(cliente);
 
-                if (existeDocumento != null && existeDocumento.id != cliente.id)
+                if (existeDocumento)
                 {
                     return BadRequest(new { mensaje = "Ya existe un cliente con ese dni o nie" });
                 }
@@ -187,7 +158,7 @@ namespace EpicarsAPI.Controllers
                 oldCliente.email = cliente.email;
             }
           
-            var result = await _context.SaveChangesAsync();
+            var result = await _uow.Complete();
 
             if (result <= 0)
             {
@@ -201,19 +172,19 @@ namespace EpicarsAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCliente(int id)
         {
-            if(id == null)
+            if(id <= 0)
             {
                 return BadRequest(new { mensaje = "Debe introducir el identificador del cliente" });
             }
 
-            Cliente clienteToDelete = _context.Cliente.Where(c => c.id == id).SingleOrDefault();
+            Cliente clienteToDelete = await _uow.ClientesRepository.GetById(id);
 
             if(clienteToDelete == null)
             {
                 return BadRequest(new { mensaje = "No existe ese cliente" });
             }
-            _context.Cliente.Remove(clienteToDelete);
-            var result = await _context.SaveChangesAsync();
+            _uow.ClientesRepository.DeleteCliente(clienteToDelete);
+            var result = await _uow.Complete();
 
             if (result <= 0)
             {
