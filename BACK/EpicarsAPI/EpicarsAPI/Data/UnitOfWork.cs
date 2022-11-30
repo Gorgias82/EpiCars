@@ -12,7 +12,15 @@ namespace EpicarsAPI.Data
             _context= context;
         }
 
-        public IClientesRepository ClientesRepository => new ClientesRepository(_context);
+        public IClienteRepository ClientesRepository => new ClienteRepository(_context);
+
+        public IVehiculoRepository VehiculoRepository => new VehiculoRepository(_context);
+
+        public IVentaRepository VentaRepository => new VentaRepository(_context);
+
+        public IGastoVehiculoRepository GastoVehiculoRepository => new GastoVehiculoRepository(_context);
+
+        public IMetodoPagoRepository MetodoPagoRepository => new MetodoPagoRepository(_context);
 
         public async Task<int> Complete()
         {

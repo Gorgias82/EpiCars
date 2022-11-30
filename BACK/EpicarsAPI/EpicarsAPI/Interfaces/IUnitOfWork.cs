@@ -4,8 +4,11 @@ namespace EpicarsAPI.Interfaces
 {
     public interface IUnitOfWork
     {
-        IClientesRepository ClientesRepository { get; }
-
+        IClienteRepository ClientesRepository { get; }
+        IVehiculoRepository VehiculoRepository { get; }
+        IVentaRepository VentaRepository { get; }
+        IGastoVehiculoRepository GastoVehiculoRepository { get; }
+        IMetodoPagoRepository MetodoPagoRepository { get; }
         Task<int> Complete();
         bool HasChanges();
     }

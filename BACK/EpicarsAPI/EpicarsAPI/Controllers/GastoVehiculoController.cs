@@ -1,4 +1,5 @@
 ﻿using EpicarsAPI.Data;
+using EpicarsAPI.Interfaces;
 using EpicarsAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,23 +17,17 @@ namespace EpicarsAPI.Controllers
     public class GastoVehiculoController : Controller
     {
 
-        private readonly epicars_Context _context;
+        private readonly IUnitOfWork _uow;
 
-        public GastoVehiculoController(epicars_Context context)
+        public GastoVehiculoController(IUnitOfWork uow)
         {
-            _context = context;
-
+           _uow= uow;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<GastoVehiculo>>> getGastosVehiculo()
-        {
-            List<GastoVehiculo> gastosVehiculo;
-
-            gastosVehiculo = await _context.GastoVehiculo
-                .ToListAsync();
-
-            return Ok(gastosVehiculo);
+        {        
+            return Ok(await _uow.GastoVehiculoRepository.GetGastosVehiculoAsync());
         }
 
         [HttpPost]
@@ -42,22 +37,14 @@ namespace EpicarsAPI.Controllers
 
             if (gastoVehiculo.importe <= 0) return BadRequest(new { mensaje = "Debe introducir el importe" });
 
-            var vehiculo = _context.Vehiculo.Where(v => v.id == gastoVehiculo.vehiculo_id);
+            var vehiculo = await _uow.VehiculoRepository.GetVehiculoById(gastoVehiculo.vehiculo_id);
 
             if (vehiculo == null) return BadRequest(new { mensaje = "El gasto debe pertenecer a un vehículo" });
 
             if(gastoVehiculo.metodoPago == null) return BadRequest(new { mensaje = "Debe introducir el metodo de pago" });
 
-            List<GastoVehiculo> gastos = _context.GastoVehiculo.ToList();
-
-            //int maxKey = 0;
-            //if(gastos.Count > 0)
-            //{
-            //    maxKey = _context.GastoVehiculo.Max(g => g.id);
-            //}
-            //gastoVehiculo.id = maxKey + 1;
-            _context.GastoVehiculo.Add(gastoVehiculo);
-            var result = await _context.SaveChangesAsync();
+            _uow.GastoVehiculoRepository.InsertGastoVehiculo(gastoVehiculo);
+            var result = await _uow.Complete();
 
             if (result <= 0)
             {
@@ -72,7 +59,7 @@ namespace EpicarsAPI.Controllers
         {
             if (gastoVehiculo != null) return BadRequest(new { mensaje = "Tiene que introducir un gasto de vehículo" });
 
-            GastoVehiculo oldGastoVehiculo = _context.GastoVehiculo.Where(v => v.id == gastoVehiculo.id).FirstOrDefault();
+            GastoVehiculo oldGastoVehiculo = await _uow.GastoVehiculoRepository.GetGastoVehiculoById(gastoVehiculo.id);
 
             if (oldGastoVehiculo == null) return BadRequest(new { mensaje = "El gasto que esta tratando de modificar no existe" });
 
@@ -91,7 +78,7 @@ namespace EpicarsAPI.Controllers
                 oldGastoVehiculo.metodoPago = gastoVehiculo.metodoPago;
             }
 
-            var result = await _context.SaveChangesAsync();
+            var result = await _uow.Complete();
 
             if (result <= 0)
             {
@@ -109,14 +96,14 @@ namespace EpicarsAPI.Controllers
                 return BadRequest(new { mensaje = "Debe introducir el identificador del gasto" });
             }
 
-            GastoVehiculo gastoVehiculoToDelete   = _context.GastoVehiculo.Where(c => c.id == id).SingleOrDefault();
+            GastoVehiculo gastoVehiculoToDelete   = await _uow.GastoVehiculoRepository.GetGastoVehiculoById(id);
 
             if (gastoVehiculoToDelete == null)
             {
                 return BadRequest(new { mensaje = "No existe ese gasto" });
             }
-            _context.GastoVehiculo.Remove(gastoVehiculoToDelete);
-            var result = await _context.SaveChangesAsync();
+            _uow.GastoVehiculoRepository.DeleteGastoVehiculo(gastoVehiculoToDelete);
+            var result = await _uow.Complete();
 
             if (result <= 0)
             {

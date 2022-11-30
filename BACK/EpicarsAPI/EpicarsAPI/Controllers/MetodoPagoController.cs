@@ -1,4 +1,5 @@
 ﻿using EpicarsAPI.Data;
+using EpicarsAPI.Interfaces;
 using EpicarsAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,20 +13,18 @@ namespace EpicarsAPI.Controllers
     [ApiController]
     public class MetodoPagoController : Controller
     {
-        private readonly epicars_Context _context;
+        private readonly IUnitOfWork _uow;
 
-        public MetodoPagoController(epicars_Context context)
+        public MetodoPagoController(IUnitOfWork uow)
         {
-            _context = context;
+            _uow= uow;
 
         }
 
         [HttpGet]
         public async Task<ActionResult<List<MetodoPago>>> getMetodosPago()
         {
-            List<MetodoPago> metodosPago = await _context.MetodoPago.ToListAsync();
-
-            return Ok(metodosPago);
+            return Ok(await _uow.MetodoPagoRepository.GetMetodoPagosAsync());
         }
 
     }

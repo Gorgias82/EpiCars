@@ -1,4 +1,5 @@
 ﻿using EpicarsAPI.Data;
+using EpicarsAPI.Interfaces;
 using EpicarsAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,29 +16,24 @@ namespace EpicarsAPI.Controllers
     public class VehiculoController : ControllerBase
     {
 
-        private readonly epicars_Context _context;
+        private readonly IUnitOfWork _uow;
 
-        public VehiculoController(epicars_Context context)
+        public VehiculoController(IUnitOfWork uow)
         {
-            _context = context;
-
+            _uow = uow;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Vehiculo>>> GetVehiculos()
         {
-            List<Vehiculo> vehiculos;
-            
-            vehiculos = await _context.Vehiculo
-                .Include("gastos")
-                .ToListAsync();
-        
-            return Ok(vehiculos);
+           
+            return Ok(await _uow.VehiculoRepository.GetVehiculosAsync());
         }
 
         [HttpPost]
         public async Task<ActionResult> insertVehiculo([FromBody] Vehiculo vehiculo)
         {
+
             if (vehiculo == null) return BadRequest(new { mensaje = "Debe introducir un vehículo" });
 
             if(vehiculo.matricula == null || vehiculo.matricula.Length <= 0) return BadRequest(new { mensaje = "Debe introducir una matrícula" });
@@ -49,23 +45,24 @@ namespace EpicarsAPI.Controllers
             if (vehiculo.bastidor == null || vehiculo.bastidor.Length <= 0 ) return BadRequest(new { mensaje = "Debe introducir el bastidor del vehículo" });
 
             if (vehiculo.vendedor_id <= 0) return BadRequest(new { mensaje = "Debe introducir el identificador del cliente vendedor" });
-
-            Cliente vendedor = _context.Cliente.Where(c => c.id == vehiculo.vendedor_id).FirstOrDefault();
+         
+             
+            Cliente vendedor = await _uow.ClientesRepository.GetById((int) vehiculo.vendedor_id);
 
             if(vendedor == null) return BadRequest(new { mensaje = "No existe ese cliente vendedor" });
 
-            Vehiculo existeMatricula = _context.Vehiculo.Where(v => v.matricula.ToUpper() == vehiculo.matricula.ToUpper()).FirstOrDefault();
+            bool existeMatricula = _uow.VehiculoRepository.existeMatricula(vehiculo);
 
-            if(existeMatricula != null) return BadRequest(new { mensaje = "Ya hay un vehículo registrado con esa matrícula" });
+            if(existeMatricula) return BadRequest(new { mensaje = "Ya hay un vehículo registrado con esa matrícula" });
 
-            Vehiculo existeBastidor = _context.Vehiculo.Where(v => v.bastidor.ToUpper() == vehiculo.bastidor.ToUpper()).FirstOrDefault();
+            bool existeBastidor = _uow.VehiculoRepository.existeBastidor(vehiculo);
 
-            if (existeBastidor != null) return BadRequest(new { mensaje = "Ya hay un vehículo registrado con ese número de bastidor" });
+            if (existeBastidor) return BadRequest(new { mensaje = "Ya hay un vehículo registrado con ese número de bastidor" });
 
 
 
-            _context.Vehiculo.Add(vehiculo);
-            var result = await _context.SaveChangesAsync();
+            _uow.VehiculoRepository.InsertVehiculo(vehiculo);
+            var result = await _uow.Complete();
 
             if(result <= 0) return BadRequest(new { mensaje = "No se ha podido introducir el vehículo correctamente" });
 
@@ -79,7 +76,7 @@ namespace EpicarsAPI.Controllers
         {
             if (vehiculo == null) return BadRequest(new { mensaje = "Debe introducir un vehículo" });
 
-            Vehiculo oldVehiculo = _context.Vehiculo.Where(v => v.id == vehiculo.id).FirstOrDefault();
+            Vehiculo oldVehiculo = await _uow.VehiculoRepository.GetVehiculoById(vehiculo.id);
 
             if (oldVehiculo == null)
             {
@@ -100,21 +97,21 @@ namespace EpicarsAPI.Controllers
 
             if (vehiculo.vendedor_id <= 0) return BadRequest(new { mensaje = "Debe introducir el identificador del cliente vendedor" });
 
-            Cliente vendedor = _context.Cliente.Where(c => c.id == vehiculo.vendedor_id).FirstOrDefault();
+            Cliente vendedor = await _uow.ClientesRepository.GetById((int) vehiculo.vendedor_id);
 
             if (vendedor == null) return BadRequest(new { mensaje = "No existe ese cliente vendedor" });
 
             oldVehiculo.vendedor_id = vehiculo.vendedor_id;
 
-            Vehiculo existeMatricula = _context.Vehiculo.Where(v => v.matricula.ToUpper() == vehiculo.matricula.ToUpper()).FirstOrDefault();
+            bool existeMatricula = _uow.VehiculoRepository.existeMatricula(vehiculo);
 
-            if (existeMatricula != null && existeMatricula.matricula.ToUpper() != vehiculo.matricula.ToUpper()) return BadRequest(new { mensaje = "Ya hay un vehículo registrado con esa matrícula" });
+            if (existeMatricula) return BadRequest(new { mensaje = "Ya hay un vehículo registrado con esa matrícula" });
 
             oldVehiculo.matricula = vehiculo.matricula;
 
-            Vehiculo existeBastidor = _context.Vehiculo.Where(v => v.bastidor.ToUpper() == vehiculo.bastidor.ToUpper()).FirstOrDefault();
+            bool existeBastidor = _uow.VehiculoRepository.existeBastidor(vehiculo);
 
-            if (existeBastidor != null && existeBastidor.bastidor.ToUpper() != vehiculo.bastidor.ToUpper()) return BadRequest(new { mensaje = "Ya hay un vehículo registrado con ese número de bastidor" });
+            if (existeBastidor) return BadRequest(new { mensaje = "Ya hay un vehículo registrado con ese número de bastidor" });
 
             oldVehiculo.bastidor = vehiculo.bastidor;
 
@@ -138,7 +135,7 @@ namespace EpicarsAPI.Controllers
 
             oldVehiculo.gestionVenta = vehiculo.gestionVenta;
 
-            var result = await _context.SaveChangesAsync();
+            var result = await _uow.Complete();
 
             if (result <= 0)
             {
@@ -158,14 +155,14 @@ namespace EpicarsAPI.Controllers
                 return BadRequest(new { mensaje = "Debe introducir el identificador del vehículo" });
             }
 
-            Vehiculo vehiculoToDelete = _context.Vehiculo.Where(v => v.id == id).SingleOrDefault();
+            Vehiculo vehiculoToDelete = await _uow.VehiculoRepository.GetVehiculoById(id);
 
             if (vehiculoToDelete == null)
             {
                 return BadRequest(new { mensaje = "No existe ese vehículo" });
             }
-            _context.Vehiculo.Remove(vehiculoToDelete);
-            var result = await _context.SaveChangesAsync();
+            _uow.VehiculoRepository.DeleteVehiculo(vehiculoToDelete);
+            var result = await _uow.Complete();
 
             if (result <= 0)
             {

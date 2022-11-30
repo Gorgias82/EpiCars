@@ -9,10 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EpicarsAPI.Data
 {
-    public class ClientesRepository : IClientesRepository
+    public class ClienteRepository : IClienteRepository
     {
         private readonly epicars_Context _context;
-        public ClientesRepository(epicars_Context context)
+        public ClienteRepository(epicars_Context context)
         {
             _context = context;
         }
@@ -51,11 +51,6 @@ namespace EpicarsAPI.Data
         public void InsertCliente(Cliente cliente)
         {
              _context.Cliente.Add(cliente);
-        }
-
-        public Task UpdateCliente(Cliente cliente)
-        {
-            throw new System.NotImplementedException();
         }
 
         public void DeleteCliente(Cliente cliente)

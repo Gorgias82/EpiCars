@@ -1,4 +1,5 @@
 ﻿using EpicarsAPI.Data;
+using EpicarsAPI.Interfaces;
 using EpicarsAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,23 +16,17 @@ namespace EpicarsAPI.Controllers
     [ApiController]
     public class VentaController : ControllerBase
     {
-        private readonly epicars_Context _context;
+        private readonly IUnitOfWork _uow;
 
-        public VentaController(epicars_Context context)
+        public VentaController(IUnitOfWork uow)
         {
-            _context = context;
-
+            _uow = uow;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Venta>>> GetVentas()
-        {
-            List<Venta> ventas;
-
-            ventas = await _context.Venta
-                .ToListAsync();
-
-            return Ok(ventas);
+        {       
+            return Ok(await _uow.VentaRepository.GetVentasAsync());
         }
 
         [HttpPost]
@@ -47,16 +42,12 @@ namespace EpicarsAPI.Controllers
 
             if (venta.comprador_id <= 0) return BadRequest(new { mensaje = "Debe introducir el cliente comprador" });
 
-            var comprador = _context.Cliente
-                                .Where(c => c.id == venta.comprador_id)
-                                .SingleOrDefault();
+            var comprador = _uow.ClientesRepository.GetById(venta.comprador_id);
 
             if(comprador == null ) return BadRequest(new { mensaje = "El cliente comprador no esta registrado" });
 
+            var vehiculo = await _uow.VehiculoRepository.GetVehiculoById(venta.vehiculo_id);
 
-            var vehiculo = _context.Vehiculo
-                                   .Where(v => v.id == venta.vehiculo_id)
-                                   .SingleOrDefault();
             if (vehiculo != null)
             {
                 if(vehiculo.vendido == false || vehiculo.vendido == null)
@@ -65,22 +56,20 @@ namespace EpicarsAPI.Controllers
                     vehiculo.precioVenta = venta.importe;
                     vehiculo.fechaVenta = DateTime.Today;
                     vehiculo.comprador_id = venta.comprador_id;
-                    _context.SaveChanges();
+                    await _uow.Complete();
                 }
                 else
                 {
                     return BadRequest(new { mensaje = "El vehículo introducido ya esta vendido" });
-                }
-          
+                }        
             }
             else
             {
                 return BadRequest(new { mensaje = "No existe el vehículo introducido" });
             }
 
-
-            _context.Venta.Add(venta);
-            var result = await _context.SaveChangesAsync();
+            _uow.VentaRepository.InsertVenta(venta);
+            var result = await _uow.Complete();
 
             if (result <= 0) return BadRequest(new { mensaje = "No se ha podido introducir la venta correctamente" });
 
@@ -101,13 +90,11 @@ namespace EpicarsAPI.Controllers
 
             if (venta.comprador_id <= 0) return BadRequest(new { mensaje = "Debe introducir el cliente comprador" });
 
-            Venta oldVenta = _context.Venta.Where(v => v.id == venta.id).FirstOrDefault();
+            Venta oldVenta = await _uow.VentaRepository.GetVentaById(venta.id);
 
             if(oldVenta == null) return BadRequest(new { mensaje = "La venta que esta tratando de modificar no existe" });
 
-            var comprador = _context.Cliente
-                                .Where(c => c.id == venta.comprador_id)
-                                .SingleOrDefault();
+            var comprador = _uow.ClientesRepository.GetById(venta.comprador_id);
 
             if (comprador == null) return BadRequest(new { mensaje = "El cliente comprador no esta registrado" });
 
@@ -118,8 +105,7 @@ namespace EpicarsAPI.Controllers
             oldVenta.importeFinanciado = venta.importeFinanciado;
             oldVenta.comprador_id = venta.comprador_id;
 
-
-            var result = await _context.SaveChangesAsync();
+            var result = await _uow.Complete();
 
             if (result <= 0)
             {
@@ -138,31 +124,29 @@ namespace EpicarsAPI.Controllers
                 return BadRequest(new { mensaje = "Debe introducir el identificador de la venta" });
             }
 
-            Venta ventaToDelete = _context.Venta.Where(v => v.id == id).SingleOrDefault();
+            Venta ventaToDelete = await _uow.VentaRepository.GetVentaById(id);
 
             if (ventaToDelete == null)
             {
                 return BadRequest(new { mensaje = "No existe esa venta" });
             }
 
-            var vehiculo = _context.Vehiculo
-                                  .Where(v => v.id == ventaToDelete.vehiculo_id)
-                                  .SingleOrDefault();
+            var vehiculo = await _uow.VehiculoRepository.GetVehiculoById(ventaToDelete.vehiculo_id);
+
             if (vehiculo != null)
             {             
-                    vehiculo.vendido = false;
-                    vehiculo.fechaVenta = null;
-                    vehiculo.comprador_id = null;
-                    _context.SaveChanges();
-            
+                vehiculo.vendido = false;
+                vehiculo.fechaVenta = null;
+                vehiculo.comprador_id = null;
+                await _uow.Complete();         
             }
             else
             {
                 return BadRequest(new { mensaje = "No existe el vehículo introducido" });
             }
 
-            _context.Venta.Remove(ventaToDelete);
-            var result = await _context.SaveChangesAsync();
+            _uow.VentaRepository.DeleteVenta(ventaToDelete);
+            var result = await _uow.Complete();
 
             if (result <= 0)
             {
